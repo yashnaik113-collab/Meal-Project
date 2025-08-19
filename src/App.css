@@ -1,0 +1,33 @@
+/* Make the app take full height */
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Let main content expand to push footer to bottom */
+.hero-section {
+  flex: 1;
+  position: relative;
+  background: url("https://source.unsplash.com/random/1600x900") center/cover no-repeat;
+  padding-bottom: 50px; /* optional: avoid content overlap with footer */
+}
+
+/* Center hero content vertically */
+.hero-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: rgba(7, 0, 0, 0.937);
+  text-align: center;
+}
+
+.home {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: rgba(7, 0, 0, 0.937);
+  text-align: center;
+}
