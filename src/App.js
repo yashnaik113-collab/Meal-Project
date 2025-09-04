@@ -2,33 +2,39 @@ import React from "react";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Home from "./components/Home";
+import { Box } from "@mui/material";
+import Login from "./components/login"; // ✅ keep capital L
+import Signup from "./components/Signup";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Joinus from "./components/Joinus";
 
 const App = () => {
   return (
-    <div>
-      <Navbar />
+    <Router>
+      {" "}
+      {/* ✅ wrap everything inside Router */}
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          minHeight: "100vh",
+        }}
+      >
+        <Navbar />
 
-      <div style={{ display: "flex" }}>
-        <div
-          style={{
-            // width: "200%",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-            width: "100%", // 100% of viewport width
-            height: "100vh",
-            display: "flex",
-            // alignItems: "center",
-          }}
-        >
-          <Home />
-        </div>
+        {/* ✅ Routes will decide what to render */}
+        <Box sx={{ flex: 1 }}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/Joinus" element={<Joinus />} />
+          </Routes>
+        </Box>
 
-        <div></div>
-      </div>
-
-      <Footer />
-    </div>
+        <Footer />
+      </Box>
+    </Router>
   );
 };
 

@@ -1,40 +1,65 @@
 import React from "react";
-import Homebg from "../components/homebg.jpg"; // adjust path if needed
+import { Box, Typography, Button } from "@mui/material";
+import { Link } from "react-router-dom"; // ✅ correct Link import
+import foodsticker from "../components/home2padd.png";
 
 const Home = () => {
   return (
-    <div
-      style={{
+    <Box
+      sx={{
         flex: 1,
-        backgroundImage: `url(${Homebg})`, // 👈 background
-        backgroundSize: "cover", // make sure it covers full screen
-        backgroundPosition: "center", // center the image
-        backgroundRepeat: "no-repeat", // avoid tiling
-        height: "100vh", // full screen height
+        backgroundColor: "white",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        height: "100vh",
         display: "flex",
-        flexDirection: "column",
-        justifyContent: "center", // center vertically
-        alignItems: "center", // center horizontally
-        color: "white", // text color (change if needed)
-        textAlign: "center",
-        overflowX: "hidden",
+        alignItems: "center",
+        pl: 10,
+        justifyContent: "flex-start",
       }}
     >
-      <div
-        style={{
-          justifyContent: "flex-end", // moves text to the right side
-          alignItems: "center", // keeps it vertically centered
-          textAlign: "center",
-          color: "white",
-        }}
-      >
-        <h1>Ghar Jaisa Khana...</h1>
-        <h3>Where Every Bite...</h3>
-        <p>feels like Home</p>
-        <p>is made with Mother's Love</p>
-        <p>brings back memories</p>
-      </div>
-    </div>
+      <Box sx={{ mt: -30, pr: 5, pl: 10 }}>
+        <Typography
+          variant="h2"
+          sx={{ fontWeight: "bold", mb: 2, color: "black" }}
+        >
+          100%...
+        </Typography>
+        <Typography
+          variant="h2"
+          sx={{ fontWeight: "bold", mb: 2, color: "#f44336" }}
+        >
+          Ghar Jaisa Khana
+        </Typography>
+        <Typography variant="h4" sx={{ mb: 1 }}>
+          Where Every Bite...
+        </Typography>
+        <Typography variant="body1">Feels like Home</Typography>
+        <Typography variant="body1">Made with Mother's Love</Typography>
+        <Typography variant="body1">Brings back memories</Typography>
+
+        {/* ✅ Button now navigates to /login */}
+        <Button
+          component={Link}
+          to="/login"
+          variant="contained"
+          color="warning"
+          sx={{ mt: 5, px: 6, py: 1.5, fontSize: "1rem", borderRadius: "8px" }}
+        >
+          Order Now
+        </Button>
+      </Box>
+
+      {/* ✅ Right Side - Food Sticker */}
+      <Box sx={{ flex: 1, display: "flex", justifyContent: "center", mt: -30 }}>
+        <img
+          src={foodsticker}
+          alt="Food Thali"
+          style={{ width: "80%", maxWidth: "450px", objectFit: "contain" }}
+        />
+      </Box>
+    </Box>
   );
 };
 

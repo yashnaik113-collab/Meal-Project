@@ -1,0 +1,10 @@
+{
+  "status": "success",
+  "message": "Dummy API response",
+  "data": {
+    "id": 1,
+    "name": "John Doe",
+    "email": "john.doe@example.com",
+    "age": 25
+  }
+}

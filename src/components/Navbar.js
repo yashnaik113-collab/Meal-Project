@@ -1,6 +1,6 @@
 import React from "react";
 import logo from "../components/logo.png";
-import heroImage from "../components/tiffin-bg.jpg"; // replace filename with your actual image
+import heroImage from "../components/tiffin-bg.jpg";
 
 const Navbar = () => {
   return (
@@ -13,6 +13,13 @@ const Navbar = () => {
         flexDirection: "column",
         alignItems: "center",
         padding: "10px 0", // Reduced height
+
+        width: "100%",
+        boxShadow: "0px 3px 4px rgba(0,0,0,0.1)", // light shadow under navbar
+        position: "sticky",
+        top: 0,
+        zIndex: 1000,
+        backgroundColor: "white",
       }}
     >
       {/* Logo */}
@@ -49,7 +56,7 @@ const Navbar = () => {
             { label: "About Us", href: "/About" },
             { label: "Services", href: "/services" },
             { label: "For Corporates", href: "/corporates" },
-            { label: "Join Us", href: "/join" },
+            { label: "Join Us", href: "/Joinus" },
             { label: "Contact Us", href: "/contact" },
           ].map((link, index) => (
             <li key={index}>
