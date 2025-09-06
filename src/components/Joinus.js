@@ -8,7 +8,7 @@ import {
   MenuItem,
 } from "@mui/material";
 
-const ProviderRegistration = () => {
+const Joinus = () => {
   const [formData, setFormData] = useState({
     fullName: "",
     phone: "",
@@ -74,6 +74,7 @@ const ProviderRegistration = () => {
             variant="outlined"
             fullWidth
             sx={{ mb: 2 }}
+            required
           />
 
           {/* City Dropdown */}
@@ -84,12 +85,12 @@ const ProviderRegistration = () => {
             fullWidth
             sx={{ mb: 2 }}
             defaultValue=""
+            required
           >
             <MenuItem value="" disabled>
               Select your city
             </MenuItem>
             <MenuItem value="Kankavli">Kankavli</MenuItem>
-            {/* Add more cities here if needed */}
           </TextField>
 
           <TextField
@@ -137,4 +138,4 @@ const ProviderRegistration = () => {
   );
 };
 
-export default ProviderRegistration;
+export default Joinus; // ✅ name match App.js import

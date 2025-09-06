@@ -1,8 +1,24 @@
 import React from "react";
+import { Link } from "react-router-dom"; // ✅ React Router link
 import logo from "../components/logo.png";
 import heroImage from "../components/tiffin-bg.jpg";
 
 const Navbar = () => {
+  const linkStyle = {
+    textDecoration: "none",
+    color: "black",
+    fontWeight: "bold",
+    transition: "color 0.3s ease", // smooth hover
+  };
+
+  const handleMouseOver = (e) => {
+    e.target.style.color = "orange";
+  };
+
+  const handleMouseOut = (e) => {
+    e.target.style.color = "black";
+  };
+
   return (
     <header
       style={{
@@ -12,36 +28,39 @@ const Navbar = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        padding: "10px 0", // Reduced height
-
+        padding: "10px 0",
         width: "100%",
-        boxShadow: "0px 3px 4px rgba(0,0,0,0.1)", // light shadow under navbar
+        boxShadow: "0px 3px 4px rgba(0,0,0,0.1)",
         position: "sticky",
         top: 0,
         zIndex: 1000,
         backgroundColor: "white",
       }}
     >
-      {/* Logo */}
+      {/* ✅ Logo links to Homepage */}
       <div
         style={{
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          height: "100px", // Fixed height so menu items don't move
+          height: "100px",
         }}
       >
-        <img
-          src={logo}
-          alt="MealsOnTheWay Logo"
-          style={{
-            height: "250px", // Change this to adjust logo size
-            width: "auto",
-          }}
-        />
+        <Link to="/" style={{ textDecoration: "none" }}>
+          <img
+            src={logo}
+            alt="MealsOnTheWay Logo"
+            style={{
+              height: "250px",
+              width: "auto",
+              cursor: "pointer",
+              transition: "transform 0.3s ease", // hover effect
+            }}
+          />
+        </Link>
       </div>
 
-      {/* Navigation Links */}
+      {/* ✅ Navigation Links */}
       <nav style={{ marginTop: "5px" }}>
         <ul
           style={{
@@ -52,29 +71,56 @@ const Navbar = () => {
             margin: 0,
           }}
         >
-          {[
-            { label: "About Us", href: "/About" },
-            { label: "Services", href: "/services" },
-            { label: "For Corporates", href: "/corporates" },
-            { label: "Join Us", href: "/Joinus" },
-            { label: "Contact Us", href: "/contact" },
-          ].map((link, index) => (
-            <li key={index}>
-              <a
-                href={link.href}
-                style={{
-                  textDecoration: "none",
-                  color: "black",
-                  fontWeight: "bold",
-                  transition: "color 0.3s ease",
-                }}
-                onMouseOver={(e) => (e.target.style.color = "orange")}
-                onMouseOut={(e) => (e.target.style.color = "black")}
-              >
-                {link.label}
-              </a>
-            </li>
-          ))}
+          <li>
+            <Link
+              to="/about"
+              style={linkStyle}
+              onMouseOver={handleMouseOver}
+              onMouseOut={handleMouseOut}
+            >
+              About Us
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/services"
+              style={linkStyle}
+              onMouseOver={handleMouseOver}
+              onMouseOut={handleMouseOut}
+            >
+              Services
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/corporates"
+              style={linkStyle}
+              onMouseOver={handleMouseOver}
+              onMouseOut={handleMouseOut}
+            >
+              For Corporates
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/joinus" // ✅ Fixed here
+              style={linkStyle}
+              onMouseOver={handleMouseOver}
+              onMouseOut={handleMouseOut}
+            >
+              Join Us
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/contact"
+              style={linkStyle}
+              onMouseOver={handleMouseOver}
+              onMouseOut={handleMouseOut}
+            >
+              Contact Us
+            </Link>
+          </li>
         </ul>
       </nav>
     </header>

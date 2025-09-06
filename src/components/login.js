@@ -10,7 +10,7 @@ const Login = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#f9f9f9",
+        backgroundColor: "#fff8f2",
       }}
     >
       <Box
