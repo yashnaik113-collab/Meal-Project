@@ -1,10 +1,43 @@
 {
   "status": "success",
-  "message": "Dummy API response",
+  "message": "Product details fetched successfully",
   "data": {
-    "id": 1,
-    "name": "John Doe",
-    "email": "john.doe@example.com",
-    "age": 25
+    "product_id": "FD12345",
+    "name": "Margherita Pizza",
+    "description": "Classic cheese and tomato pizza with fresh basil.",
+    "category": "Pizza",
+    "price": 249.0,
+    "currency": "INR",
+    "availability": true,
+    "rating": {
+      "average": 4.5,
+      "total_reviews": 128
+    },
+    "restaurant": {
+      "restaurant_id": "R6789",
+      "name": "Italiano Kitchen",
+      "address": "123 MG Road, Pune",
+      "contact": "+91-9876543210",
+      "delivery_time": "30-40 mins"
+    },
+
+    "options": {
+      "size": [
+        { "label": "Small", "price": 199.0 },
+        { "label": "Medium", "price": 249.0 },
+        { "label": "Large", "price": 349.0 }
+      ],
+      "extras": [
+        { "label": "Extra Cheese", "price": 50.0 },
+        { "label": "Stuffed Crust", "price": 80.0 },
+        { "label": "Chilli Flakes", "price": 20.0 }
+      ]
+    },
+    "images": [
+      "https://dummyimage.com/600x400/ffcc00/000000&text=Margherita+Pizza",
+      "https://dummyimage.com/600x400/ff6600/ffffff&text=Pizza+Slice"
+    ],
+    "tags": ["vegetarian", "italian", "cheese"],
+    "is_best_seller": true
   }
 }

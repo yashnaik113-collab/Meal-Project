@@ -12,6 +12,8 @@ const Joinus = () => {
   const [formData, setFormData] = useState({
     fullName: "",
     phone: "",
+    city: "",
+    pincode: "",
     address: "",
     speciality: "",
     experience: "",
@@ -84,6 +86,9 @@ const Joinus = () => {
             variant="outlined"
             fullWidth
             sx={{ mb: 2 }}
+            name="city"
+            value={formData.city}
+            onChange={handleChange}
             defaultValue=""
             required
           >
@@ -92,6 +97,17 @@ const Joinus = () => {
             </MenuItem>
             <MenuItem value="Kankavli">Kankavli</MenuItem>
           </TextField>
+
+          {/* Pincode */}
+          <TextField
+            fullWidth
+            label="Pincode"
+            name="pincode"
+            value={formData.pincode}
+            onChange={handleChange}
+            margin="normal"
+            required
+          />
 
           <TextField
             fullWidth

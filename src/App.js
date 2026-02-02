@@ -1,48 +1,3 @@
-// import React from "react";
-// import Navbar from "./components/Navbar";
-// import Footer from "./components/Footer";
-// import Home from "./components/Home";
-// import { Box } from "@mui/material";
-// import Login from "./components/login";
-// import Signup from "./components/Signup";
-// import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-// import Joinus from "./components/Joinus";
-// import AboutUs from "./components/Aboutus";
-// import Services from "./components/Services";
-
-// const App = () => {
-//   return (
-//     <Router>
-//       <Box
-//         sx={{
-//           display: "flex",
-//           flexDirection: "column",
-//           minHeight: "100vh",
-//         }}
-//       >
-//         <Navbar />
-
-//         <Box sx={{ flex: 1 }}>
-//           <Routes>
-//             <Route path="/" element={<Home />} />
-//             <Route path="/login" element={<Login />} />
-//             <Route path="/signup" element={<Signup />} />
-//             <Route path="/joinus" element={<Joinus />} />
-//             {/* ✅ changed path */}
-//             <Route path="/about" element={<AboutUs />} />
-//             <Route path="/services" element={<Services />} />
-//             {/* ✅ keep lowercase */}
-//           </Routes>
-//         </Box>
-
-//         <Footer />
-//       </Box>
-//     </Router>
-//   );
-// };
-
-// export default App;
-
 import React from "react";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -53,6 +8,8 @@ import Signup from "./components/Signup";
 import Joinus from "./components/Joinus";
 import AboutUs from "./components/Aboutus";
 import Services from "./components/Services";
+import ContactUs from "./components/contactus";
+import ForCorporates from "./components/forcorporates";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
@@ -83,6 +40,8 @@ const App = () => {
             <Route path="/joinus" element={<Joinus />} />
             <Route path="/about" element={<AboutUs />} />
             <Route path="/services" element={<Services />} />
+            <Route path="/contact" element={<ContactUs />} />
+            <Route path="/corporates" element={<ForCorporates />} />
 
             {/* Language-specific routes */}
             <Route path="/Punjabi" element={<PunjabiPage />} />
