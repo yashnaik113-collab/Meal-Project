@@ -10,6 +10,8 @@ import AboutUs from "./components/Aboutus";
 import Services from "./components/Services";
 import ContactUs from "./components/contactus";
 import ForCorporates from "./components/forcorporates";
+import CartPage from "./components/CartPage";
+import { CartProvider } from "./components/CartContext";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
@@ -26,6 +28,7 @@ import RajasthaniPage from "./components/RajasthaniPage";
 
 const App = () => {
   return (
+    <CartProvider>
     <Router>
       <Box
         sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
@@ -44,6 +47,7 @@ const App = () => {
             <Route path="/corporates" element={<ForCorporates />} />
 
             {/* Language-specific routes */}
+            <Route path="/cart" element={<CartPage />} />
             <Route path="/Punjabi" element={<PunjabiPage />} />
             <Route path="/gujarati" element={<GujaratiPage />} />
             <Route path="/south" element={<SouthPage />} />
@@ -59,6 +63,7 @@ const App = () => {
         <Footer />
       </Box>
     </Router>
+    </CartProvider>
   );
 };
 

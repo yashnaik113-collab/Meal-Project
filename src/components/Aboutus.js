@@ -9,7 +9,9 @@ import spicesImg from "../components/spices.jpg";
 
 const AboutUs = () => {
   return (
-    <Box sx={{ px: { xs: 2, md: 10 }, py: { xs: 4, md: 8 } }}>
+    <Box sx={{ pt: { xs: 4, md: 8 }, pb: 0 }}>
+      {/* Container for Mission, Vision, Values */}
+      <Box sx={{ px: { xs: 2, md: 10 } }}>
       {/* Mission Section */}
       <Grid
         container
@@ -181,6 +183,8 @@ const AboutUs = () => {
         what we offer
       </Typography>
 
+      </Box>
+
       {/* Background container with spices image */}
       <Box
         sx={{
@@ -191,8 +195,7 @@ const AboutUs = () => {
           py: { xs: 6, md: 10 },
           mt: 6,
           position: "relative",
-          width: "100vw",
-          marginLeft: "calc(-50vw + 50%)",
+          width: "100%",
           "&::before": {
             content: '""',
             position: "absolute",

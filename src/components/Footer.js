@@ -10,6 +10,8 @@ const Footer = () => {
         py: { xs: 3, md: 5 },
         px: { xs: 2, md: 8 },
         borderTop: "1px solid #e0e0e0",
+        position: "relative",
+        zIndex: 10,
       }}
     >
       <Box sx={{ maxWidth: 1200, mx: "auto" }}>
