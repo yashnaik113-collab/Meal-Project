@@ -1,0 +1,410 @@
+.special-thali-page-root {
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    background-color: #fff;
+}
+
+.special-thali-container {
+    max-width: 1200px;
+    margin: -20px auto 0;
+    padding: 0 20px 40px;
+    position: relative;
+    z-index: 5;
+}
+
+.slider-section {
+    padding: 36px 0 28px;
+    background: #fff;
+}
+
+.slider-outer {
+    position: relative;
+    max-width: 1100px;
+    margin: 0 auto;
+    overflow: hidden;
+    padding: 0 16px;
+}
+
+.slider-track {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
+    will-change: transform;
+}
+
+.slider-slide {
+    min-width: 420px;
+    height: 220px;
+    border-radius: 20px;
+    overflow: hidden;
+    flex-shrink: 0;
+    transition: transform 0.4s, opacity 0.4s;
+    background: #ccc;
+}
+
+.slider-slide.active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.slide-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.arrow-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.92);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.arrow-btn.left {
+    left: 4px;
+}
+
+.arrow-btn.right {
+    right: 4px;
+}
+
+.dots-wrap {
+    display: flex;
+    justify-content: center;
+    gap: 7px;
+    margin-top: 18px;
+}
+
+.dot-btn {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #c8d5c8;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+    border: none;
+    padding: 0;
+}
+
+.dot-btn.active {
+    background: #3d8c3d;
+    transform: scale(1.25);
+}
+
+.section-label {
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #888;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 30px;
+}
+
+.meal-plans-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.meal-card {
+    background: white;
+    border-radius: 20px;
+    display: flex;
+    overflow: hidden;
+    padding: 25px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    transition: transform 0.3s;
+}
+
+.meal-card:hover {
+    transform: translateY(-5px);
+}
+
+.meal-info {
+    flex: 1;
+    padding-right: 20px;
+}
+
+.veg-icon {
+    width: 18px;
+    height: 18px;
+    border: 1px solid #28a745;
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.veg-dot {
+    width: 10px;
+    height: 10px;
+    background-color: #28a745;
+    border-radius: 50%;
+}
+
+.meal-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: #1a1a1a;
+    margin: 0 0 10px;
+}
+
+.meal-pricing {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.current-price {
+    font-size: 20px;
+    font-weight: 800;
+    color: #1a1a1a;
+}
+
+.original-price {
+    font-size: 16px;
+    color: #999;
+    text-decoration: line-through;
+}
+
+.discount-tag {
+    color: #4b68ff;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.meal-description {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+.read-more {
+    color: #28a745;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.plan-duration {
+    font-size: 13px;
+    color: #666;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.info-icon {
+    width: 14px;
+    height: 14px;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: #999;
+}
+
+.meal-image-container {
+    width: 280px;
+    position: relative;
+    border-radius: 15px;
+    /* overflow: visible to show the Add button overlapping the bottom */
+}
+
+.meal-image-container img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+.per-meal-badge {
+    position: absolute;
+    top: 0;
+    left: 10%;
+    width: 80%;
+    background: linear-gradient(to right, #f8d448, #f8be48);
+    color: #333;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 8px;
+    text-align: center;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.meal-badge-original {
+    text-decoration: line-through;
+    color: #666;
+    margin-left: 5px;
+    font-weight: 500;
+}
+
+.add-btn-container {
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    z-index: 5;
+}
+
+.add-btn {
+    background: white;
+    color: #28a745;
+    border: 1px solid #28a745;
+    border-radius: 8px;
+    padding: 8px 0;
+    width: 100%;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: background 0.2s, color 0.2s;
+}
+
+.add-btn:hover {
+    background: #28a745;
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .meal-card {
+        flex-direction: column;
+    }
+    .meal-image-container {
+        width: 100%;
+        margin-top: 20px;
+    }
+    .slider-slide {
+        min-width: 300px;
+        height: 180px;
+    }
+}
+/* Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.65); 
+    backdrop-filter: blur(8px); 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999; /* Increased z-index to be above everything */
+    padding: 0;
+    margin: 0;
+}
+
+.modal-content {
+    background: #ffffff !important;
+    color: #1a1a1a;
+    width: 90%;
+    max-width: 850px;
+    margin: auto; /* Centering fallback */
+    border-radius: 24px;
+    position: relative;
+    padding: 40px;
+    display: flex;
+    gap: 30px;
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.2), 0 30px 70px rgba(0,0,0,0.6); /* Vibrant double shadow for glow */
+    animation: modalScale 0.3s ease-out;
+}
+
+@keyframes modalScale {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.close-modal {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #f5f5f5;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 18px;
+    color: #666;
+    transition: background 0.2s;
+}
+
+.close-modal:hover {
+    background: #eee;
+}
+
+.modal-left {
+    flex: 1;
+}
+
+.modal-right {
+    width: 220px;
+}
+
+.modal-img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 18px;
+}
+
+.modal-title {
+    font-size: 24px;
+    font-weight: 800;
+    color: #1a1a1a;
+    margin-bottom: 12px;
+}
+
+.modal-pricing {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.modal-description {
+    font-size: 15px;
+    color: #555;
+    line-height: 1.6;
+}
+
+@media (max-width: 600px) {
+    .modal-content {
+        flex-direction: column-reverse;
+        padding: 30px;
+        gap: 20px;
+    }
+    .modal-right {
+        width: 100%;
+    }
+    .modal-img {
+        height: 200px;
+    }
+}

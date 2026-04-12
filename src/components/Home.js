@@ -2124,96 +2124,7 @@ const Home = () => {
             >
               Having your original instant homemade cuisines
             </Typography>
-            {items.length > 0 && (
-              <Grid container spacing={3} sx={{ mt: 1 }}>
-                {items.map((item, idx) => {
-                  const title =
-                    item.name ||
-                    item.title ||
-                    item.food_name ||
-                    item.productName ||
-                    `Dish ${idx + 1}`;
-                  const image =
-                    item.image ||
-                    item.img ||
-                    item.picture ||
-                    item.thumbnail ||
-                    "";
-                  const price =
-                    item.price ?? item.p ?? item.cost ?? item.amount ?? null;
-                  return (
-                    <Grid item xs={12} sm={6} md={4} key={idx}>
-                      <Card
-                        sx={{
-                          height: "100%",
-                          display: "flex",
-                          flexDirection: "column",
-                          boxShadow: "0 2px 8px rgba(0,0,0,0.25)",
-                          transition: "transform 0.3s ease",
-                          "&:hover": { transform: "translateY(-4px)" },
-                        }}
-                      >
-                        {image ? (
-                          <CardMedia
-                            component="img"
-                            image={image}
-                            alt={title}
-                            sx={{ height: 160, objectFit: "cover" }}
-                          />
-                        ) : (
-                          <Box
-                            sx={{
-                              height: 160,
-                              backgroundColor: "#f5f5f5",
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                            }}
-                          >
-                            <Typography color="text.secondary">
-                              No image
-                            </Typography>
-                          </Box>
-                        )}
-                        <CardContent sx={{ flexGrow: 1 }}>
-                          <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                            {title}
-                          </Typography>
-                          {price != null && (
-                            <Typography
-                              variant="body2"
-                              color="text.secondary"
-                              sx={{ mt: 1 }}
-                            >
-                              ₹ {price}
-                            </Typography>
-                          )}
-                        </CardContent>
-                        <CardActions>
-                          <Button
-                            size="small"
-                            component={Link}
-                            to="/login"
-                            variant="contained"
-                            color="warning"
-                          >
-                            Order
-                          </Button>
-                          <Button
-                            size="small"
-                            component={Link}
-                            to="#"
-                            variant="outlined"
-                          >
-                            Details
-                          </Button>
-                        </CardActions>
-                      </Card>
-                    </Grid>
-                  );
-                })}
-              </Grid>
-            )}
+
           </Box>
         </Box>
 
@@ -2490,7 +2401,6 @@ const Home = () => {
 
         {/* JOIN AS CUSTOMER & CHEF */}
         <Box sx={{ py: { xs: 6, md: 8 }, px: { xs: 2, md: 8 } }}>
-
           {/* ── JOIN AS A CUSTOMER: pic left | text right ── */}
           <Box
             sx={{
@@ -2550,9 +2460,11 @@ const Home = () => {
               >
                 Order your choice of homemade food right away
               </Typography>
-              <Typography sx={{ color: "#f0f0f0", mb: 3, lineHeight: 1.8, maxWidth: 480 }}>
-                You can get the best homemade food within no time. Place
-                online food orders on the go or schedule advance orders.
+              <Typography
+                sx={{ color: "#f0f0f0", mb: 3, lineHeight: 1.8, maxWidth: 480 }}
+              >
+                You can get the best homemade food within no time. Place online
+                food orders on the go or schedule advance orders.
               </Typography>
               <Button
                 component={Link}
@@ -2602,7 +2514,9 @@ const Home = () => {
               >
                 Earn and grow with us as a Home Chef
               </Typography>
-              <Typography sx={{ color: "#f0f0f0", mb: 3, lineHeight: 1.8, maxWidth: 480 }}>
+              <Typography
+                sx={{ color: "#f0f0f0", mb: 3, lineHeight: 1.8, maxWidth: 480 }}
+              >
                 It's time to earn from cooking you have been doing your whole
                 life. Make a healthy &amp; happy society around you.
               </Typography>
@@ -2641,7 +2555,6 @@ const Home = () => {
               />
             </Box>
           </Box>
-
         </Box>
         {/* Testimonials */}
         <Box
@@ -2777,7 +2690,6 @@ const Home = () => {
             </Typography>
           </Box>
         </Box>
-
       </Box>
     </Box>
   );

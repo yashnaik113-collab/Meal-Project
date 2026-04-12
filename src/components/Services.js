@@ -12,6 +12,8 @@ import slider4 from "./slider4.jpeg";
 import slider5 from "./slider5.jpeg";
 import slider6 from "./slider6.jpeg";
 import slider7 from "./slider7.jpeg";
+import slider8 from "./slider8.jpeg";
+import slider9 from "./slider9.jpeg";
 
 // Segment card images
 import studentsImg from "./students.jpeg";
@@ -48,6 +50,8 @@ const SLIDES = [
   { src: slider5, alt: "Healthy choices" },
   { src: slider6, alt: "Authentic regional taste" },
   { src: slider7, alt: "Join as a home-chef" },
+  { src: slider8, alt: "Tiffin services at its best" },
+  { src: slider9, alt: "Delicious regional flavors" },
 ];
 
 const SEGMENTS = [
@@ -769,6 +773,10 @@ const Services = () => {
               }}
               onMouseEnter={() => setHoverMeal(i)}
               onMouseLeave={() => setHoverMeal(null)}
+              onClick={() => {
+                const name = meal.name.toLowerCase().replace(/ /g, "-");
+                navigate(`/${name}`);
+              }}
             >
               <div className="meal-circle-resp" style={styles.mealCircle}>
                 <img src={meal.src} alt={meal.name} style={styles.mealImg} />

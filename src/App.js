@@ -12,8 +12,10 @@ import ContactUs from "./components/contactus";
 import ForCorporates from "./components/forcorporates";
 import CartPage from "./components/CartPage";
 import { CartProvider } from "./components/CartContext";
-
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import axios from "axios";
+import { useEffect } from "react";
+import { useState } from "react";
 
 // Language pages
 import PunjabiPage from "./components/PunjabiPage";
@@ -25,44 +27,79 @@ import BihariPage from "./components/BihariPage";
 import NorthPage from "./components/NorthPage";
 import BengaliPage from "./components/BengaliPage";
 import RajasthaniPage from "./components/RajasthaniPage";
+import SpecialThali from "./components/specialthali";
+import DeluxeThali from "./components/DeluxeThali";
+import ClassicThali from "./components/ClassicThali";
+import ComfortThali from "./components/ComfortThali";
+import StandardThali from "./components/StandardThali";
+import JainThali from "./components/JainThali";
+import RiceCombo from "./components/RiceCombo";
+import Healthy from "./components/Healthy";
+import Breakfast from "./components/Breakfast";
+import LowCalorieMeals from "./components/LowCalorieMeals";
+import ProteinMeal from "./components/ProteinMeal";
+import Salads from "./components/Salads";
 
 const App = () => {
+  const [data, setData] = useState([]);
+  async function getdata() {
+    const res = await axios.get("http://localhost:5000/data");
+    console.log(res.data);
+    setData(res.data);
+  }
+
+  useEffect(() => {
+    getdata();
+  }, []);
+
   return (
     <CartProvider>
-    <Router>
-      <Box
-        sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
-      >
-        <Navbar />
+      <Router>
+        <Box
+          sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
+        >
+          <Navbar />
 
-        <Box sx={{ flex: 1 }}>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/joinus" element={<Joinus />} />
-            <Route path="/about" element={<AboutUs />} />
-            <Route path="/services" element={<Services />} />
-            <Route path="/contact" element={<ContactUs />} />
-            <Route path="/corporates" element={<ForCorporates />} />
+          <Box sx={{ flex: 1 }}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/joinus" element={<Joinus />} />
+              <Route path="/about" element={<AboutUs />} />
+              <Route path="/services" element={<Services />} />
+              <Route path="/contact" element={<ContactUs />} />
+              <Route path="/corporates" element={<ForCorporates />} />
 
-            {/* Language-specific routes */}
-            <Route path="/cart" element={<CartPage />} />
-            <Route path="/Punjabi" element={<PunjabiPage />} />
-            <Route path="/gujarati" element={<GujaratiPage />} />
-            <Route path="/south" element={<SouthPage />} />
-            <Route path="/kashmiri" element={<KashmiriPage />} />
-            <Route path="/maharashtrian" element={<MaharashtrianPage />} />
-            <Route path="/bihari" element={<BihariPage />} />
-            <Route path="/north" element={<NorthPage />} />
-            <Route path="/bengali" element={<BengaliPage />} />
-            <Route path="/rajasthani" element={<RajasthaniPage />} />
-          </Routes>
+              {/* Language-specific routes */}
+              <Route path="/cart" element={<CartPage />} />
+              <Route path="/Punjabi" element={<PunjabiPage />} />
+              <Route path="/gujarati" element={<GujaratiPage />} />
+              <Route path="/south" element={<SouthPage />} />
+              <Route path="/kashmiri" element={<KashmiriPage />} />
+              <Route path="/maharashtrian" element={<MaharashtrianPage />} />
+              <Route path="/bihari" element={<BihariPage />} />
+              <Route path="/north" element={<NorthPage />} />
+              <Route path="/bengali" element={<BengaliPage />} />
+              <Route path="/rajasthani" element={<RajasthaniPage />} />
+               <Route path="/special-thali" element={<SpecialThali />} />
+               <Route path="/deluxe-thali" element={<DeluxeThali />} />
+               <Route path="/classic-thali" element={<ClassicThali />} />
+               <Route path="/comfort-thali" element={<ComfortThali />} />
+               <Route path="/standard-thali" element={<StandardThali />} />
+               <Route path="/jain-thali" element={<JainThali />} />
+               <Route path="/rice-combo" element={<RiceCombo />} />
+               <Route path="/healthy" element={<Healthy />} />
+               <Route path="/breakfast" element={<Breakfast />} />
+               <Route path="/low-calorie-meals" element={<LowCalorieMeals />} />
+               <Route path="/protein-meal" element={<ProteinMeal />} />
+               <Route path="/salads" element={<Salads />} />
+            </Routes>
+          </Box>
+
+          <Footer />
         </Box>
-
-        <Footer />
-      </Box>
-    </Router>
+      </Router>
     </CartProvider>
   );
 };
