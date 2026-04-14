@@ -1,13 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import './specialthali.css';
-import { useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useCart } from './CartContext';
 import { useGetfoodListData } from '../services/fetchProduct';
-
-// Import images
-import b1 from './proteinmeal1.jpg';
-import b2 from './proteinmeal2.jpg';
-import b3 from './proteinmeal3.jpg';
 
 // Slider images from Services
 import slider1 from './slider1.jpeg';
@@ -48,13 +43,14 @@ function ChevronRight() {
     );
 }
 
-const ProteinMeal = () => {
+const CategoryPage = () => {
+    const { categoryTag } = useParams();
     const navigate = useNavigate();
     const { addToCart } = useCart();
     const [selectedMeal, setSelectedMeal] = useState(null);
-    const { data: foodListData } = useGetfoodListData();
+    const { data: foodListData, isLoading } = useGetfoodListData();
     
-    // Slider logic from Services.js
+    // Slider logic
     const [current, setCurrent] = useState(0);
     const outerRef = useRef(null);
     const autoRef = useRef(null);
@@ -95,78 +91,27 @@ const ProteinMeal = () => {
         opacity: idx === current ? 1 : 0.55,
     });
 
-    const mealPlans = [
-        {
-            id: 'protein-weekly',
-            title: 'High Protein Meals - Weekly (5 Days)',
-            price: 1750,
-            originalPrice: 1950,
-            discount: '10% OFF',
-            description: 'Carefully curated high-protein meals designed for fitness enthusiasts and muscle recovery.',
-            plan: '5-Day Plan (1 meal/day)',
-            perMealPrice: 350,
-            perMealOriginal: 390,
-            image: b1,
-            category: 'veg'
-        },
-        {
-            id: 'protein-monthly',
-            title: 'High Protein Meals - Monthly',
-            price: 6600,
-            originalPrice: 7800,
-            discount: '15% OFF',
-            description: 'Carefully curated high-protein meals designed for fitness enthusiasts and muscle recovery.',
-            plan: '20-Day Plan (1 meal/day)',
-            perMealPrice: 330,
-            perMealOriginal: 390,
-            image: b2,
-            category: 'veg'
-        },
-        {
-            id: 'protein-biweekly',
-            title: 'High Protein Meals - BiWeekly',
-            price: 3400,
-            originalPrice: 3900,
-            discount: '13% OFF',
-            description: 'Carefully curated high-protein meals designed for fitness enthusiasts and muscle recovery.',
-            plan: '10-Day Plan (1 meal/day)',
-            perMealPrice: 340,
-            perMealOriginal: 390,
-            image: b3,
-            category: 'veg'
-        }
-    ];
+    // Helper to format category tag for matching
+    const formatTag = (tag) => tag.toLowerCase().replace(/-/g, ' ');
 
-    // Filter backend foods with tag 'protein meal'
-    const backendFoods = foodListData?.data?.filter(food => 
-        food.tags?.some(tag => tag.toLowerCase().trim() === 'protein meal')
-    ).map(food => ({
-        id: food._id,
-        title: food.foodName,
-        price: food.price,
-        originalPrice: Math.round(food.price * 1.25),
-        discount: '20% OFF',
-        description: food.description,
-        plan: 'On Demand / Daily',
-        perMealPrice: food.price,
-        perMealOriginal: Math.round(food.price * 1.15),
-        image: food.images[0],
-        isBackend: true,
-        category: food.category
-    })) || [];
+    // Filter foods based on the tag
+    const filteredFoods = foodListData?.data?.filter(food => {
+        const targetTag = formatTag(categoryTag);
+        return food.tags?.some(tag => tag.toLowerCase() === targetTag);
+    }) || [];
 
-    const allMealPlans = [...mealPlans, ...backendFoods];
-
-    const handleAddToCart = (meal) => {
+    const handleAddToCart = (food) => {
         addToCart({
-            id: meal.id,
-            name: meal.title,
-            price: meal.price,
-            image: meal.image,
-            cuisine: 'Protein Meal'
+            id: food._id,
+            name: food.foodName,
+            price: food.price,
+            image: food.images[0],
+            cuisine: categoryTag.replace(/-/g, ' ').toUpperCase()
         }, 1);
-        alert(`${meal.title} added to cart!`);
+        alert(`${food.foodName} added to cart!`);
     };
+
+    if (isLoading) return <div style={{ padding: '100px', textAlign: 'center' }}>Loading delicious meals...</div>;
 
     return (
         <div className="special-thali-page-root">
@@ -209,39 +154,46 @@ const ProteinMeal = () => {
             </section>
 
             <div className="special-thali-container">
-                <div className="section-label">MEAL PLANS</div>
+                <div className="section-label">{categoryTag.replace(/-/g, ' ').toUpperCase()}</div>
 
                 <div className="meal-plans-list">
-                    {allMealPlans.map((meal) => (
-                        <div key={meal.id} className="meal-card">
-                            <div className="meal-info">
-                                <div className="veg-icon">
-                                    <div className="veg-dot" style={{ backgroundColor: meal.category === 'non-veg' ? '#dc3545' : '#28a745' }}></div>
+                    {filteredFoods.length > 0 ? (
+                        filteredFoods.map((food) => (
+                            <div key={food._id} className="meal-card">
+                                <div className="meal-info">
+                                    <div className="veg-icon">
+                                        <div className="veg-dot" style={{ backgroundColor: food.category === 'veg' ? '#28a745' : '#dc3545' }}></div>
+                                    </div>
+                                    <h3 className="meal-title">{food.foodName}</h3>
+                                    <div className="meal-pricing">
+                                        <span className="current-price">₹{food.price}</span>
+                                        {/* Since dynamic data might not have original price, we can mock it or hide */}
+                                        <span className="original-price">₹{Math.round(food.price * 1.2)}</span>
+                                        <span className="discount-tag">20% OFF</span>
+                                    </div>
+                                    <p className="meal-description">
+                                        {food.description} <span className="read-more" onClick={() => setSelectedMeal(food)}>read more</span>
+                                    </p>
+                                    {food.addons?.length > 0 && (
+                                        <div className="plan-duration" style={{ fontSize: '12px' }}>
+                                            Addons: {food.addons.map(a => a.name).join(', ')}
+                                        </div>
+                                    )}
                                 </div>
-                                <h3 className="meal-title">{meal.title}</h3>
-                                <div className="meal-pricing">
-                                    <span className="current-price">₹{meal.price}</span>
-                                    <span className="original-price">₹{meal.originalPrice}</span>
-                                    <span className="discount-tag">{meal.discount}</span>
-                                </div>
-                                <p className="meal-description">
-                                    {meal.description} <span className="read-more" onClick={() => setSelectedMeal(meal)}>read more</span>
-                                </p>
-                                <div className="plan-duration">
-                                    {meal.plan} <span className="info-icon">i</span>
+                                <div className="meal-image-container">
+                                    <img src={food.images[0]} alt={food.foodName} />
+                                    <div className="add-btn-container">
+                                        <button className="add-btn" onClick={() => handleAddToCart(food)}>ADD +</button>
+                                    </div>
                                 </div>
                             </div>
-                            <div className="meal-image-container">
-                                <div className="per-meal-badge">
-                                    ₹{meal.perMealPrice} <span className="meal-badge-original">₹{meal.perMealOriginal}</span> Per Meal
-                                </div>
-                                <img src={meal.image} alt={meal.title} />
-                                <div className="add-btn-container">
-                                    <button className="add-btn" onClick={() => handleAddToCart(meal)}>ADD +</button>
-                                </div>
-                            </div>
+                        ))
+                    ) : (
+                        <div style={{ textAlign: 'center', width: '100%', padding: '40px' }}>
+                            <h3>No items found in this category yet.</h3>
+                            <p>Admin is currently adding delicious meals for {categoryTag.replace(/-/g, ' ')}!</p>
                         </div>
-                    ))}
+                    )}
                 </div>
             </div>
 
@@ -252,17 +204,17 @@ const ProteinMeal = () => {
                         <button className="close-modal" onClick={() => setSelectedMeal(null)}>×</button>
                         
                         <div className="modal-left">
-                            <h2 className="modal-title">{selectedMeal.title || selectedMeal.foodName}</h2>
+                            <h2 className="modal-title">{selectedMeal.foodName}</h2>
                             <div className="modal-pricing">
                                 <span className="current-price">₹{selectedMeal.price}</span>
-                                <span className="original-price">₹{selectedMeal.originalPrice || Math.round(selectedMeal.price * 1.25)}</span>
-                                <span className="discount-tag">{selectedMeal.discount || '20% OFF'}</span>
+                                <span className="original-price">₹{Math.round(selectedMeal.price * 1.2)}</span>
+                                <span className="discount-tag">20% OFF</span>
                             </div>
                             <p className="modal-description">{selectedMeal.description}</p>
                         </div>
 
                         <div className="modal-right">
-                            <img src={selectedMeal.image || (selectedMeal.images && selectedMeal.images[0])} alt={selectedMeal.title} className="modal-img" />
+                            <img src={selectedMeal.images[0]} alt={selectedMeal.foodName} className="modal-img" />
                         </div>
                     </div>
                 </div>
@@ -271,4 +223,4 @@ const ProteinMeal = () => {
     );
 };
 
-export default ProteinMeal;
+export default CategoryPage;

@@ -120,11 +120,12 @@
 // export default Navbar;
 
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useCart } from "./CartContext";
 
 const Navbar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { totalItems } = useCart();
 
   const navItems = [
@@ -212,10 +213,19 @@ const Navbar = () => {
           >
             {navItems.map((item) => {
               const isActive = location.pathname === item.path;
+              
+              const handleClick = (e) => {
+                if (item.path === "/services" && localStorage.getItem("isLoggedIn") !== "true") {
+                  e.preventDefault();
+                  navigate("/login");
+                }
+              };
+
               return (
                 <li key={item.path}>
                   <Link
                     to={item.path}
+                    onClick={handleClick}
                     style={{
                       textDecoration: "none",
                       color: isActive ? "#b35a00" : "#2c1a06",
@@ -225,11 +235,8 @@ const Navbar = () => {
                       textTransform: "uppercase",
                       display: "inline-block",
                       padding: "4px 0",
-                      borderBottom: isActive
-                        ? "2px solid #b35a00"
-                        : "2px solid transparent",
-                      transition:
-                        "color 0.2s ease, border-color 0.2s ease, transform 0.12s ease",
+                      borderBottom: isActive ? "2px solid #b35a00" : "2px solid transparent",
+                      transition: "color 0.2s ease, border-color 0.2s ease, transform 0.12s ease",
                     }}
                     onMouseOver={(e) => {
                       if (!isActive) {
@@ -254,63 +261,10 @@ const Navbar = () => {
           </ul>
         </nav>
 
-        {/* ── RIGHT: Cart + Order Now ── */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            alignItems: "center",
-            gap: "12px",
-          }}
-        >
-          {/* Cart Icon with Badge */}
-          <Link
-            to="/cart"
-            style={{
-              textDecoration: "none",
-              position: "relative",
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              width: "42px",
-              height: "42px",
-              borderRadius: "50%",
-              backgroundColor: totalItems > 0 ? "#0d6efd" : "#f0f0f0",
-              transition: "background-color 0.2s ease, transform 0.15s ease",
-            }}
-            onMouseOver={(e) => {
-              e.currentTarget.style.transform = "translateY(-1px)";
-            }}
-            onMouseOut={(e) => {
-              e.currentTarget.style.transform = "translateY(0)";
-            }}
-            title="View Cart"
-          >
-            <span style={{ fontSize: "18px" }}>🛒</span>
-            {totalItems > 0 && (
-              <span
-                style={{
-                  position: "absolute",
-                  top: "-4px",
-                  right: "-4px",
-                  backgroundColor: "#e53935",
-                  color: "white",
-                  borderRadius: "50%",
-                  width: "18px",
-                  height: "18px",
-                  fontSize: "10px",
-                  fontWeight: "900",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  border: "2px solid white",
-                }}
-              >
-                {totalItems > 9 ? "9+" : totalItems}
-              </span>
-            )}
-          </Link>
+        {/* ── RIGHT: Order Now ── */}
+        <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: "12px" }}>
 
+          {/* Order Now Button */}
           <Link
             to="/login"
             style={{

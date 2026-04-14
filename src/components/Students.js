@@ -5,9 +5,8 @@ import { useCart } from './CartContext';
 import { useGetfoodListData } from '../services/fetchProduct';
 
 // Import images
-import b1 from './proteinmeal1.jpg';
-import b2 from './proteinmeal2.jpg';
-import b3 from './proteinmeal3.jpg';
+import studentImg1 from './student1.jpg';
+import studentImg2 from './student2.jpg';
 
 // Slider images from Services
 import slider1 from './slider1.jpeg';
@@ -48,13 +47,13 @@ function ChevronRight() {
     );
 }
 
-const ProteinMeal = () => {
+const Students = () => {
     const navigate = useNavigate();
     const { addToCart } = useCart();
     const [selectedMeal, setSelectedMeal] = useState(null);
     const { data: foodListData } = useGetfoodListData();
     
-    // Slider logic from Services.js
+    // Slider logic
     const [current, setCurrent] = useState(0);
     const outerRef = useRef(null);
     const autoRef = useRef(null);
@@ -97,49 +96,34 @@ const ProteinMeal = () => {
 
     const mealPlans = [
         {
-            id: 'protein-weekly',
-            title: 'High Protein Meals - Weekly (5 Days)',
-            price: 1750,
-            originalPrice: 1950,
-            discount: '10% OFF',
-            description: 'Carefully curated high-protein meals designed for fitness enthusiasts and muscle recovery.',
-            plan: '5-Day Plan (1 meal/day)',
-            perMealPrice: 350,
-            perMealOriginal: 390,
-            image: b1,
-            category: 'veg'
-        },
-        {
-            id: 'protein-monthly',
-            title: 'High Protein Meals - Monthly',
-            price: 6600,
-            originalPrice: 7800,
+            id: 'student-14day-flexi',
+            title: '14 Day Plan - Flexi',
+            price: 3080,
+            originalPrice: 3640,
             discount: '15% OFF',
-            description: 'Carefully curated high-protein meals designed for fitness enthusiasts and muscle recovery.',
-            plan: '20-Day Plan (1 meal/day)',
-            perMealPrice: 330,
-            perMealOriginal: 390,
-            image: b2,
-            category: 'veg'
+            description: '3 Chapati/Roti, 2 Veg Curry/Dry, 1 Dal, 1 Steamed Rice, Cut Salad, Sweet',
+            plan: '14-Day Plan (1 meal/day)',
+            perMealPrice: 220,
+            perMealOriginal: 260,
+            image: studentImg1
         },
         {
-            id: 'protein-biweekly',
-            title: 'High Protein Meals - BiWeekly',
-            price: 3400,
-            originalPrice: 3900,
-            discount: '13% OFF',
-            description: 'Carefully curated high-protein meals designed for fitness enthusiasts and muscle recovery.',
-            plan: '10-Day Plan (1 meal/day)',
-            perMealPrice: 340,
-            perMealOriginal: 390,
-            image: b3,
-            category: 'veg'
+            id: 'student-7day-flexi',
+            title: '7 Day Plan - Flexi',
+            price: 1610,
+            originalPrice: 1820,
+            discount: '12% OFF',
+            description: '3 Chapati/Roti, 2 Veg Curry/Dry, 1 Dal, 1 Steamed Rice, Cut Salad, Sweet',
+            plan: '7-Day Plan (1 meal/day)',
+            perMealPrice: 230,
+            perMealOriginal: 260,
+            image: studentImg2
         }
     ];
 
-    // Filter backend foods with tag 'protein meal'
+    // Filter backend foods with tag 'students'
     const backendFoods = foodListData?.data?.filter(food => 
-        food.tags?.some(tag => tag.toLowerCase().trim() === 'protein meal')
+        food.tags?.some(tag => tag.toLowerCase().trim() === 'students')
     ).map(food => ({
         id: food._id,
         title: food.foodName,
@@ -163,7 +147,7 @@ const ProteinMeal = () => {
             name: meal.title,
             price: meal.price,
             image: meal.image,
-            cuisine: 'Protein Meal'
+            cuisine: 'Students'
         }, 1);
         alert(`${meal.title} added to cart!`);
     };
@@ -210,7 +194,7 @@ const ProteinMeal = () => {
 
             <div className="special-thali-container">
                 <div className="section-label">MEAL PLANS</div>
-
+                
                 <div className="meal-plans-list">
                     {allMealPlans.map((meal) => (
                         <div key={meal.id} className="meal-card">
@@ -250,19 +234,17 @@ const ProteinMeal = () => {
                 <div className="modal-overlay" onClick={() => setSelectedMeal(null)}>
                     <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                         <button className="close-modal" onClick={() => setSelectedMeal(null)}>×</button>
-                        
                         <div className="modal-left">
-                            <h2 className="modal-title">{selectedMeal.title || selectedMeal.foodName}</h2>
+                            <h2 className="modal-title">{selectedMeal.title}</h2>
                             <div className="modal-pricing">
                                 <span className="current-price">₹{selectedMeal.price}</span>
-                                <span className="original-price">₹{selectedMeal.originalPrice || Math.round(selectedMeal.price * 1.25)}</span>
-                                <span className="discount-tag">{selectedMeal.discount || '20% OFF'}</span>
+                                <span className="original-price">₹{selectedMeal.originalPrice}</span>
+                                <span className="discount-tag">{selectedMeal.discount}</span>
                             </div>
                             <p className="modal-description">{selectedMeal.description}</p>
                         </div>
-
                         <div className="modal-right">
-                            <img src={selectedMeal.image || (selectedMeal.images && selectedMeal.images[0])} alt={selectedMeal.title} className="modal-img" />
+                            <img src={selectedMeal.image} alt={selectedMeal.title} className="modal-img" />
                         </div>
                     </div>
                 </div>
@@ -271,4 +253,4 @@ const ProteinMeal = () => {
     );
 };
 
-export default ProteinMeal;
+export default Students;

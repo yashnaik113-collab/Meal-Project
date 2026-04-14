@@ -1,4 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import { Grid, Card, CardMedia, CardContent, Typography, Button, Box, Chip } from "@mui/material";
+import axios from "axios";
+import { useCart } from "./CartContext";
 import { useNavigate } from "react-router-dom";
 import indiaBg from "./indiabg.jpg";
 
@@ -582,6 +585,9 @@ const Services = () => {
   const [hoverCard, setHoverCard] = useState(null);
   const [hoverMeal, setHoverMeal] = useState(null);
   const [hoverRegion, setHoverRegion] = useState(null);
+  const [foods, setFoods] = useState([]);
+  const [selectedExtras, setSelectedExtras] = useState({}); // { foodId: [addonIndices] }
+  const { addToCart } = useCart();
   const navigate = useNavigate();
   const outerRef = useRef(null);
   const autoRef = useRef(null);
@@ -616,6 +622,16 @@ const Services = () => {
   }, [total]);
 
   useEffect(() => {
+    const fetchFoods = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/api/foods");
+        setFoods(res.data);
+      } catch (err) {
+        console.error("Error fetching foods:", err);
+      }
+    };
+    fetchFoods();
+
     resetAuto();
     autoReviewRef.current = setInterval(() => {
       setCurrentReview((c) => (c + 1) % totalReviews);
@@ -749,12 +765,17 @@ const Services = () => {
               }}
               onMouseEnter={() => setHoverCard(i)}
               onMouseLeave={() => setHoverCard(null)}
+              onClick={() => {
+                const path = seg.label.toLowerCase();
+                navigate(`/${path}`);
+              }}
             >
               <img src={seg.src} alt={seg.alt} style={styles.specialCardImg} />
             </div>
           ))}
         </div>
       </section>
+
 
       {/* ══════════════════════════════════════════════
           SECTION 3 — MEAL SUBSCRIPTIONS
@@ -786,6 +807,8 @@ const Services = () => {
           ))}
         </div>
       </section>
+
+
 
       {/* ══════════════════════════════════════════════
           SECTION 3.5 — CHECK OUT WHAT'S COOKING

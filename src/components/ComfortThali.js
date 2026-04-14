@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import './specialthali.css';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from './CartContext';
+import { useGetfoodListData } from '../services/fetchProduct';
 
 // Import images
 import comfort1 from './comfort1.jpg';
@@ -49,6 +50,7 @@ const ComfortThali = () => {
     const navigate = useNavigate();
     const { addToCart } = useCart();
     const [selectedMeal, setSelectedMeal] = useState(null);
+    const { data: foodListData } = useGetfoodListData();
     
     // Slider logic from Services.js
     const [current, setCurrent] = useState(0);
@@ -142,6 +144,26 @@ const ComfortThali = () => {
         }
     ];
 
+    // Filter backend foods with tag 'comfort thali'
+    const backendFoods = foodListData?.data?.filter(food => 
+        food.tags?.some(tag => tag.toLowerCase() === 'comfort thali')
+    ).map(food => ({
+        id: food._id,
+        title: food.foodName,
+        price: food.price,
+        originalPrice: Math.round(food.price * 1.25),
+        discount: '20% OFF',
+        description: food.description,
+        plan: 'On Demand / Daily',
+        perMealPrice: food.price,
+        perMealOriginal: Math.round(food.price * 1.15),
+        image: food.images[0],
+        isBackend: true,
+        category: food.category
+    })) || [];
+
+    const allMealPlans = [...mealPlans, ...backendFoods];
+
     const handleAddToCart = (meal) => {
         addToCart({
             id: meal.id,
@@ -197,11 +219,11 @@ const ComfortThali = () => {
                 <div className="section-label">MEAL PLANS</div>
 
                 <div className="meal-plans-list">
-                    {mealPlans.map((meal) => (
+                    {allMealPlans.map((meal) => (
                         <div key={meal.id} className="meal-card">
                             <div className="meal-info">
                                 <div className="veg-icon">
-                                    <div className="veg-dot"></div>
+                                    <div className="veg-dot" style={{ backgroundColor: meal.category === 'non-veg' ? '#dc3545' : '#28a745' }}></div>
                                 </div>
                                 <h3 className="meal-title">{meal.title}</h3>
                                 <div className="meal-pricing">
@@ -237,17 +259,17 @@ const ComfortThali = () => {
                         <button className="close-modal" onClick={() => setSelectedMeal(null)}>×</button>
                         
                         <div className="modal-left">
-                            <h2 className="modal-title">{selectedMeal.title}</h2>
+                            <h2 className="modal-title">{selectedMeal.title || selectedMeal.foodName}</h2>
                             <div className="modal-pricing">
                                 <span className="current-price">₹{selectedMeal.price}</span>
-                                <span className="original-price">₹{selectedMeal.originalPrice}</span>
-                                <span className="discount-tag">{selectedMeal.discount}</span>
+                                <span className="original-price">₹{selectedMeal.originalPrice || Math.round(selectedMeal.price * 1.25)}</span>
+                                <span className="discount-tag">{selectedMeal.discount || '20% OFF'}</span>
                             </div>
                             <p className="modal-description">{selectedMeal.description}</p>
                         </div>
 
                         <div className="modal-right">
-                            <img src={selectedMeal.image} alt={selectedMeal.title} className="modal-img" />
+                            <img src={selectedMeal.image || selectedMeal.images[0]} alt={selectedMeal.title} className="modal-img" />
                         </div>
                     </div>
                 </div>

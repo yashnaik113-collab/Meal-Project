@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import {
   Box,
   Container,
@@ -8,6 +8,10 @@ import {
   Card,
   CardMedia,
   CardContent,
+  TextField,
+  Select,
+  MenuItem,
+  FormControl,
 } from "@mui/material";
 import corporateBg from "../components/corporatebg.jpg";
 import corporateCook from "../components/corporatecook.png";
@@ -19,6 +23,12 @@ import dailyMealPlans from "../components/dailymealplans.jpg";
 import instantFood from "../components/instantfood.jpg";
 
 const ForCorporates = () => {
+  const formRef = useRef(null);
+
+  const scrollToForm = () => {
+    formRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <>
       <Box
@@ -108,6 +118,7 @@ const ForCorporates = () => {
               {/* Button */}
               <Box>
                 <Button
+                  onClick={scrollToForm}
                   sx={{
                     backgroundColor: "#ffffff",
                     color: "#4CAF50",
@@ -539,6 +550,135 @@ const ForCorporates = () => {
                   boxShadow: "0 8px 24px rgba(0, 0, 0, 0.3)",
                 }}
               />
+            </Grid>
+          </Grid>
+        </Container>
+      </Box>
+
+      {/* Corporate Enquiry Form Section */}
+      <Box
+        ref={formRef}
+        sx={{ py: { xs: 8, md: 10 }, backgroundColor: "#ffffff" }}
+      >
+        <Container maxWidth="md">
+          <Grid container spacing={6} alignItems="center">
+            {/* Left Text */}
+            <Grid item xs={12} md={6} sx={{ pr: { md: 4 } }}>
+              <Typography
+                variant="h3"
+                sx={{
+                  fontWeight: 800,
+                  color: "#62d0ac",
+                  mb: 3,
+                  lineHeight: 1.2,
+                }}
+              >
+                What are You <br /> Waiting For?
+              </Typography>
+              <Typography
+                variant="body1"
+                sx={{
+                  color: "#333",
+                  fontSize: "1.05rem",
+                  lineHeight: 1.8,
+                  fontWeight: 500,
+                }}
+              >
+                We are here to answer any questions
+                <br /> you may have about Mealsontheway <br />
+                and its services.Fill up basic details <br />
+                and we'll respond within 24 hours or less.
+              </Typography>
+            </Grid>
+
+            {/* Right Form Card */}
+            <Grid item xs={12} md={6}>
+              <Card
+                sx={{
+                  p: { xs: 3, md: 4 },
+                  borderRadius: 3,
+                  boxShadow: "0px 6px 30px rgba(0,0,0,0.08)",
+                  border: "1px solid #eaeaea",
+                }}
+              >
+                <Typography
+                  variant="h5"
+                  sx={{ fontWeight: 600, color: "#444", mb: 3 }}
+                >
+                  Corporate Enquiry
+                </Typography>
+                <Box
+                  component="form"
+                  sx={{ display: "flex", flexDirection: "column", gap: 2.5 }}
+                >
+                  <TextField
+                    fullWidth
+                    placeholder="Your Name"
+                    variant="outlined"
+                    size="small"
+                    InputProps={{ sx: { borderRadius: 1.5, color: "#333" } }}
+                  />
+                  <TextField
+                    fullWidth
+                    placeholder="Your Official Email Address"
+                    variant="outlined"
+                    size="small"
+                    InputProps={{ sx: { borderRadius: 1.5, color: "#333" } }}
+                  />
+                  <TextField
+                    fullWidth
+                    placeholder="Your Mobile Number"
+                    variant="outlined"
+                    size="small"
+                    InputProps={{ sx: { borderRadius: 1.5, color: "#333" } }}
+                  />
+                  <TextField
+                    fullWidth
+                    placeholder="Organisation Name"
+                    variant="outlined"
+                    size="small"
+                    InputProps={{ sx: { borderRadius: 1.5, color: "#333" } }}
+                  />
+                  <FormControl fullWidth size="small">
+                    <Select
+                      displayEmpty
+                      defaultValue=""
+                      sx={{ borderRadius: 1.5, color: "#666" }}
+                    >
+                      <MenuItem value="" disabled>
+                        Organisation Employee Strength
+                      </MenuItem>
+                      <MenuItem value="1-50">1-50</MenuItem>
+                      <MenuItem value="51-200">51-200</MenuItem>
+                      <MenuItem value="201-500">201-500</MenuItem>
+                      <MenuItem value="500+">500+</MenuItem>
+                    </Select>
+                  </FormControl>
+                  <Box
+                    sx={{ display: "flex", justifyContent: "flex-end", mt: 1 }}
+                  >
+                    <Button
+                      variant="outlined"
+                      sx={{
+                        borderRadius: 2,
+                        px: 4,
+                        py: 0.8,
+                        textTransform: "none",
+                        fontWeight: "bold",
+                        fontSize: "1rem",
+                        color: "#4CAF50",
+                        borderColor: "#4CAF50",
+                        "&:hover": {
+                          borderColor: "#388E3C",
+                          backgroundColor: "rgba(76, 175, 80, 0.04)",
+                        },
+                      }}
+                    >
+                      Submit
+                    </Button>
+                  </Box>
+                </Box>
+              </Card>
             </Grid>
           </Grid>
         </Container>

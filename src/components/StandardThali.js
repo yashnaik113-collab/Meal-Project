@@ -1,6 +1,14 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import './specialthali.css';
 import { useNavigate } from 'react-router-dom';
+import { useCart } from './CartContext';
+import { useGetfoodListData } from '../services/fetchProduct';
+
+// Import images
+import standard1 from './standard1.jpg';
+import standard2 from './standard2.jpg';
+import standard3 from './standard3.jpg';
+import standard4 from './standard4.jpg';
 
 // Slider images from Services
 import slider1 from './slider1.jpeg';
@@ -43,6 +51,9 @@ function ChevronRight() {
 
 const StandardThali = () => {
     const navigate = useNavigate();
+    const { addToCart } = useCart();
+    const [selectedMeal, setSelectedMeal] = useState(null);
+    const { data: foodListData } = useGetfoodListData();
     
     // Slider logic from Services.js
     const [current, setCurrent] = useState(0);
@@ -85,6 +96,88 @@ const StandardThali = () => {
         opacity: idx === current ? 1 : 0.55,
     });
 
+    const mealPlans = [
+        {
+            id: 'st-monthly',
+            title: 'Standard - Monthly',
+            price: 2400,
+            originalPrice: 3600,
+            discount: '33% OFF',
+            description: '3 Chapati, 1 Veg Curry, Cut Salad',
+            plan: '20-Day Plan (1 meal/day)',
+            perMealPrice: 120,
+            perMealOriginal: 180,
+            image: standard1
+        },
+        {
+            id: 'st-3months',
+            title: 'Standard - 3 Months Plan',
+            price: 7400,
+            originalPrice: 10800,
+            discount: '31% OFF',
+            description: '3 Chapati, 1 Veg Curry, Cut Salad',
+            plan: '60-Day Plan (1 meal/day)',
+            perMealPrice: 123,
+            perMealOriginal: 180,
+            image: standard2
+        },
+        {
+            id: 'st-biweekly',
+            title: 'Standard - Biweekly',
+            price: 1300,
+            originalPrice: 1800,
+            discount: '28% OFF',
+            description: '3 Chapati, 1 Veg Curry, Cut Salad',
+            plan: '10-Day Plan (1 meal/day)',
+            perMealPrice: 130,
+            perMealOriginal: 180,
+            image: standard3
+        },
+        {
+            id: 'st-weekly',
+            title: 'Standard - Weekly (Trial)',
+            price: 700,
+            originalPrice: 900,
+            discount: '22% OFF',
+            description: '3 Chapati, 1 Veg Curry, Cut Salad',
+            plan: '5-Day Plan (1 meal/day)',
+            perMealPrice: 140,
+            perMealOriginal: 180,
+            image: standard4
+        }
+    ];
+
+    // Filter backend foods with tag 'standard thali'
+    const backendFoods = foodListData?.data?.filter(food => 
+        food.tags?.some(tag => tag.toLowerCase() === 'standard thali')
+    ).map(food => ({
+        id: food._id,
+        title: food.foodName,
+        price: food.price,
+        originalPrice: Math.round(food.price * 1.25),
+        discount: '20% OFF',
+        description: food.description,
+        plan: 'On Demand / Daily',
+        perMealPrice: food.price,
+        perMealOriginal: Math.round(food.price * 1.15),
+        image: food.images[0],
+        isBackend: true,
+        category: food.category
+    })) || [];
+
+    const allMealPlans = [...mealPlans, ...backendFoods];
+
+    const handleAddToCart = (meal) => {
+        addToCart({
+            id: meal.id,
+            name: meal.title,
+            price: meal.price,
+            image: meal.image,
+            cuisine: 'Standard Thali'
+        }, 1);
+        alert(`${meal.title} added to cart!`);
+    };
+
     return (
         <div className="special-thali-page-root">
             <section className="slider-section">
@@ -126,8 +219,64 @@ const StandardThali = () => {
             </section>
 
             <div className="special-thali-container">
-                <h1 style={{ textAlign: 'center', marginTop: '40px', color: '#333' }}>Standard Thali Coming Soon</h1>
+                <div className="section-label">MEAL PLANS</div>
+
+                <div className="meal-plans-list">
+                    {allMealPlans.map((meal) => (
+                        <div key={meal.id} className="meal-card">
+                            <div className="meal-info">
+                                <div className="veg-icon">
+                                    <div className="veg-dot" style={{ backgroundColor: meal.category === 'non-veg' ? '#dc3545' : '#28a745' }}></div>
+                                </div>
+                                <h3 className="meal-title">{meal.title}</h3>
+                                <div className="meal-pricing">
+                                    <span className="current-price">₹{meal.price}</span>
+                                    <span className="original-price">₹{meal.originalPrice}</span>
+                                    <span className="discount-tag">{meal.discount}</span>
+                                </div>
+                                <p className="meal-description">
+                                    {meal.description} <span className="read-more" onClick={() => setSelectedMeal(meal)}>read more</span>
+                                </p>
+                                <div className="plan-duration">
+                                    {meal.plan} <span className="info-icon">i</span>
+                                </div>
+                            </div>
+                            <div className="meal-image-container">
+                                <div className="per-meal-badge">
+                                    ₹{meal.perMealPrice} <span className="meal-badge-original">₹{meal.perMealOriginal}</span> Per Meal
+                                </div>
+                                <img src={meal.image} alt={meal.title} />
+                                <div className="add-btn-container">
+                                    <button className="add-btn" onClick={() => handleAddToCart(meal)}>ADD +</button>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
+
+            {/* Modal Overlay */}
+            {selectedMeal && (
+                <div className="modal-overlay" onClick={() => setSelectedMeal(null)}>
+                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                        <button className="close-modal" onClick={() => setSelectedMeal(null)}>×</button>
+                        
+                        <div className="modal-left">
+                            <h2 className="modal-title">{selectedMeal.title || selectedMeal.foodName}</h2>
+                            <div className="modal-pricing">
+                                <span className="current-price">₹{selectedMeal.price}</span>
+                                <span className="original-price">₹{selectedMeal.originalPrice || Math.round(selectedMeal.price * 1.25)}</span>
+                                <span className="discount-tag">{selectedMeal.discount || '20% OFF'}</span>
+                            </div>
+                            <p className="modal-description">{selectedMeal.description}</p>
+                        </div>
+
+                        <div className="modal-right">
+                            <img src={selectedMeal.image || selectedMeal.images[0]} alt={selectedMeal.title} className="modal-img" />
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

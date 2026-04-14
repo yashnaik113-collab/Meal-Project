@@ -1,322 +1,207 @@
-import React from "react";
-import {
-  Box,
-  Typography,
-  Button,
-  IconButton,
-  Divider,
-} from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import { useCart } from "./CartContext";
+import React, { useState } from 'react';
+import { 
+    Box, Container, Grid, Typography, Button, IconButton, 
+    Divider, TextField, Card, CardContent, Paper, 
+    Select, MenuItem, FormControl, InputLabel, Chip
+} from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
+import { useCart } from './CartContext';
+import { useNavigate } from 'react-router-dom';
 
 const CartPage = () => {
-  const { cartItems, updateQuantity, removeFromCart, clearCart, totalItems, totalPrice } = useCart();
-  const navigate = useNavigate();
+    const { cartItems, removeFromCart, updateQuantity, totalItems, totalPrice } = useCart();
+    const navigate = useNavigate();
+    const [date, setDate] = useState('');
+    const [timeSlot, setTimeSlot] = useState('');
 
-  const deliveryFee = totalPrice > 0 ? (totalPrice > 299 ? 0 : 40) : 0;
-  const taxes = Math.round(totalPrice * 0.05);
-  const grandTotal = totalPrice + deliveryFee + taxes;
+    // Calculations
+    const subTotal = totalPrice || 0;
+    const deliveryCharges = 40;
+    const platformFee = 5;
+    const taxes = subTotal * 0.05; // 5% GST
+    const discount = 10;
+    const grandTotal = subTotal + deliveryCharges + platformFee + taxes - discount;
 
-  if (cartItems.length === 0) {
+    const orangeTheme = {
+        primary: '#ff6d00',
+        secondary: '#fff3e0',
+        text: '#2c1a06',
+        grey: '#f5f5f5',
+        border: '#e0e0e0'
+    };
+
+    if (totalItems === 0) {
+        return (
+            <Box sx={{ minHeight: '80vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', p: 4 }}>
+                <Typography variant="h5" sx={{ mb: 2, fontWeight: 700 }}>Your cart is empty</Typography>
+                <Button variant="contained" onClick={() => navigate('/services')} sx={{ bgcolor: orangeTheme.primary, "&:hover": { bgcolor: '#e65100'} }}>
+                    Go to Services
+                </Button>
+            </Box>
+        );
+    }
+
     return (
-      <Box
-        sx={{
-          minHeight: "80vh",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          backgroundColor: "#fff",
-          px: 3,
-        }}
-      >
-        <ShoppingCartOutlinedIcon sx={{ fontSize: "100px", color: "#e0e0e0", mb: 3 }} />
-        <Typography sx={{ fontSize: "1.8rem", fontWeight: 700, color: "#333", mb: 1 }}>
-          Your cart is empty
-        </Typography>
-        <Typography sx={{ fontSize: "1rem", color: "#999", mb: 4, textAlign: "center" }}>
-          Add items from our regional cuisine pages to get started!
-        </Typography>
-        <Button
-          component={Link}
-          to="/services"
-          variant="contained"
-          sx={{
-            backgroundColor: "#0d6efd",
-            "&:hover": { backgroundColor: "#0b5ed7" },
-            borderRadius: "10px",
-            px: 5,
-            py: 1.5,
-            fontSize: "1rem",
-            fontWeight: 700,
-            textTransform: "none",
-          }}
-        >
-          Explore Menu
-        </Button>
-      </Box>
+        <Box sx={{ bgcolor: '#f1f3f6', flex: 1, py: 6 }}>
+            <Container maxWidth="xl" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <Box sx={{ width: '100%', maxWidth: '1280px' }}>
+                    <Box sx={{ mb: 4, display: 'flex', alignItems: 'center' }}>
+                        <IconButton onClick={() => navigate(-1)} sx={{ mr: 2, bgcolor: '#fff', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
+                            <ArrowBackIcon />
+                        </IconButton>
+                    </Box>
+
+                    <Grid container spacing={5} justifyContent="center">
+                        {/* LEFT SECTION: ADDRESS */}
+                        <Grid item xs={12} md={7}>
+                        <Card sx={{ borderRadius: '0px', boxShadow: '0 4px 20px rgba(0,0,0,0.05)', mb: 3 }}>
+                            <CardContent sx={{ p: 4 }}>
+                                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+                                    <Typography variant="h6" sx={{ fontWeight: 800, display: 'flex', alignItems: 'center', gap: 1 }}>
+                                        <LocationOnIcon sx={{ color: orangeTheme.primary }} /> Delivery Address
+                                    </Typography>
+                                    <Button variant="text" sx={{ color: orangeTheme.primary, textTransform: 'none' }}>Edit</Button>
+                                </Box>
+                                
+                                <Typography variant="body1" sx={{ fontWeight: 700, mb: 1 }}>Delivery At</Typography>
+                                <Typography variant="body2" color="text.secondary" sx={{ mb: 4, lineHeight: 1.6 }}>
+                                    Balewadi High St, Laxman Nagar, Baner, Pune, Maharashtra 411045, India
+                                </Typography>
+
+
+                            </CardContent>
+                        </Card>
+                    </Grid>
+
+                    {/* RIGHT SECTION: ITEMS & SLOTS */}
+                    <Grid item xs={12} md={5}>
+
+
+                        {/* Items List */}
+                        <Paper sx={{ borderRadius: '0px', p: 3, mb: 3 }}>
+                            <Typography variant="caption" sx={{ fontWeight: 800, color: '#999', textTransform: 'uppercase', mb: 2, display: 'block' }}>Items</Typography>
+                            {cartItems.map((item) => (
+                                <Box key={item.id} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+                                    <Box sx={{ display: 'flex', gap: 2 }}>
+                                        <Box sx={{ width: 40, height: 40, borderRadius: '8px', overflow: 'hidden' }}>
+                                            <img src={item.image} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                        </Box>
+                                        <Box>
+                                            <Typography sx={{ fontWeight: 700, fontSize: '14px' }}>{item.name}</Typography>
+                                            <Typography variant="body2" sx={{ fontWeight: 800 }}>₹{item.price}</Typography>
+                                        </Box>
+                                    </Box>
+                                    <Box sx={{ display: 'flex', alignItems: 'center', border: '1px solid #ddd', borderRadius: '6px', px: 1 }}>
+                                        <Button size="small" onClick={() => updateQuantity(item.id, item.cuisine, item.quantity - 1)} sx={{ minWidth: 30, color: orangeTheme.primary }}>-</Button>
+                                        <Typography sx={{ mx: 1, fontWeight: 800 }}>{item.quantity}</Typography>
+                                        <Button size="small" onClick={() => updateQuantity(item.id, item.cuisine, item.quantity + 1)} sx={{ minWidth: 30, color: orangeTheme.primary }}>+</Button>
+                                    </Box>
+                                </Box>
+                            ))}
+                            <Button fullWidth sx={{ color: orangeTheme.primary, textTransform: 'none', fontWeight: 700 }} startIcon={<span>+</span>}>
+                                Add more item
+                            </Button>
+                        </Paper>
+
+                        {/* Slots */}
+                        <Grid container spacing={2} sx={{ mb: 3 }}>
+                            <Grid item xs={6}>
+                                <Paper sx={{ p: 2, borderRadius: '12px' }}>
+                                    <Typography variant="caption" sx={{ fontWeight: 800, color: '#999', textAlign: 'center', display: 'block', mb: 1 }}>DATE SLOT</Typography>
+                                    <Box sx={{ display: 'flex', alignItems: 'center', bgcolor: orangeTheme.grey, p: 1, borderRadius: '8px' }}>
+                                        <TextField 
+                                            type="date" 
+                                            variant="standard" 
+                                            fullWidth 
+                                            value={date}
+                                            onChange={(e) => setDate(e.target.value)}
+                                            InputProps={{ disableUnderline: true, sx: { fontSize: '12px'} }} 
+                                        />
+                                    </Box>
+                                </Paper>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <Paper sx={{ p: 2, borderRadius: '12px' }}>
+                                    <Typography variant="caption" sx={{ fontWeight: 800, color: '#999', textAlign: 'center', display: 'block', mb: 1 }}>TIME SLOT</Typography>
+                                    <FormControl fullWidth variant="standard">
+                                        <Select
+                                            value={timeSlot}
+                                            onChange={(e) => setTimeSlot(e.target.value)}
+                                            displayEmpty
+                                            disableUnderline
+                                            sx={{ bgcolor: orangeTheme.grey, borderRadius: '8px', px: 1, fontSize: '12px', height: '35px' }}
+                                        >
+                                            <MenuItem value=""><em>Select Slot</em></MenuItem>
+                                            <MenuItem value="9-10">9:00 AM - 10:00 AM</MenuItem>
+                                            <MenuItem value="12-1">12:00 PM - 1:00 PM</MenuItem>
+                                            <MenuItem value="1-2">1:00 PM - 2:00 PM</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                </Paper>
+                            </Grid>
+                        </Grid>
+
+                        {/* Offers */}
+                        <Paper sx={{ p: 2, borderRadius: '16px', mb: 3, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                                <LocalOfferIcon sx={{ color: '#4caf50' }} />
+                                <Box>
+                                    <Typography sx={{ fontWeight: 800, fontSize: '12px' }}>WELCOME</Typography>
+                                    <Typography variant="caption" color="text.secondary">Flat ₹10 Off</Typography>
+                                </Box>
+                            </Box>
+                            <Button size="small" sx={{ color: '#d32f2f', fontWeight: 800 }}>Remove</Button>
+                        </Paper>
+
+                        {/* Billing */}
+                        <Paper sx={{ p: 3, borderRadius: '0px' }}>
+                            <Typography variant="h6" sx={{ fontWeight: 900, mb: 2 }}>TO PAY</Typography>
+                            
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                                <Typography variant="body2" color="text.secondary">Sub Total</Typography>
+                                <Typography variant="body2" sx={{ fontWeight: 700 }}>₹{subTotal}</Typography>
+                            </Box>
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                                <Typography variant="body2" color="text.secondary">Delivery Charges</Typography>
+                                <Typography variant="body2" sx={{ fontWeight: 700 }}>₹{deliveryCharges}</Typography>
+                            </Box>
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                                <Typography variant="body2" color="text.secondary">Platform Charges</Typography>
+                                <Typography variant="body2" sx={{ fontWeight: 700 }}>₹{platformFee}</Typography>
+                            </Box>
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                                <Typography variant="body2" color="text.secondary">Applicable Taxes</Typography>
+                                <Typography variant="body2" sx={{ fontWeight: 700 }}>₹{taxes.toFixed(2)}</Typography>
+                            </Box>
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2, color: '#4caf50' }}>
+                                <Typography variant="body2">Coupon Discount</Typography>
+                                <Typography variant="body2" sx={{ fontWeight: 700 }}>- ₹{discount}</Typography>
+                            </Box>
+                            <Divider sx={{ mb: 2 }} />
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <Typography variant="h6" sx={{ fontWeight: 900 }}>Grand Total</Typography>
+                                <Typography variant="h6" sx={{ fontWeight: 900, color: orangeTheme.primary }}>₹{grandTotal.toFixed(2)}</Typography>
+                            </Box>
+
+                            <Button 
+                                fullWidth 
+                                variant="contained" 
+                                sx={{ mt: 4, py: 2, borderRadius: '12px', bgcolor: orangeTheme.primary, fontWeight: 900, fontSize: '16px', "&:hover": { bgcolor: '#e65100' } }}
+                            >
+                                PROCEED TO PAY
+                            </Button>
+                        </Paper>
+                    </Grid>
+                </Grid>
+                </Box>
+            </Container>
+        </Box>
     );
-  }
-
-  return (
-    <Box sx={{ minHeight: "100vh", backgroundColor: "#f5f5f5", py: 4, px: { xs: 2, md: 6 } }}>
-      {/* Header */}
-      <Box sx={{ maxWidth: 1000, mx: "auto", mb: 3 }}>
-        <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 1 }}>
-          <IconButton onClick={() => navigate(-1)} sx={{ color: "#333" }}>
-            <ArrowBackIcon />
-          </IconButton>
-          <Typography sx={{ fontSize: "1.8rem", fontWeight: 800, color: "#1a1a1a" }}>
-            Your Cart
-          </Typography>
-          <Typography sx={{ fontSize: "1rem", color: "#777", mt: 0.3 }}>
-            ({totalItems} item{totalItems !== 1 ? "s" : ""})
-          </Typography>
-        </Box>
-      </Box>
-
-      <Box sx={{ maxWidth: 1000, mx: "auto", display: "flex", gap: 3, flexDirection: { xs: "column", md: "row" }, alignItems: "flex-start" }}>
-        {/* Left: Cart Items */}
-        <Box sx={{ flex: 1 }}>
-          <Box sx={{ backgroundColor: "#fff", borderRadius: "12px", overflow: "hidden", boxShadow: "0 2px 12px rgba(0,0,0,0.07)" }}>
-            {/* Restaurant Label */}
-            <Box sx={{ px: 3, py: 2, borderBottom: "1px solid #f0f0f0", display: "flex", alignItems: "center", gap: 1.5 }}>
-              <Box sx={{ width: 36, height: 36, borderRadius: "8px", backgroundColor: "#0d6efd", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <Typography sx={{ fontSize: "1.2rem" }}>🍽️</Typography>
-              </Box>
-              <Box>
-                <Typography sx={{ fontWeight: 700, fontSize: "1rem", color: "#1a1a1a" }}>
-                  MealsOnTheWay Kitchen
-                </Typography>
-                <Typography sx={{ fontSize: "0.8rem", color: "#aaa" }}>
-                  Fresh • Homemade • Delivered Daily
-                </Typography>
-              </Box>
-            </Box>
-
-            {/* Items */}
-            {cartItems.map((item, idx) => (
-              <Box key={`${item.id}-${item.cuisine}`}>
-                <Box sx={{ px: 3, py: 2.5, display: "flex", alignItems: "center", gap: 2 }}>
-                  {/* Veg/NonVeg indicator */}
-                  <Box
-                    sx={{
-                      width: 18,
-                      height: 18,
-                      border: "2px solid #2d8659",
-                      borderRadius: "3px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flexShrink: 0,
-                    }}
-                  >
-                    <Box sx={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: "#2d8659" }} />
-                  </Box>
-
-                  {/* Emoji */}
-                  <Typography sx={{ fontSize: "2.2rem", flexShrink: 0 }}>{item.emoji}</Typography>
-
-                  {/* Name + price */}
-                  <Box sx={{ flex: 1 }}>
-                    <Typography sx={{ fontWeight: 700, fontSize: "0.97rem", color: "#1a1a1a" }}>
-                      {item.name}
-                    </Typography>
-                    {item.cuisine && (
-                      <Typography sx={{ fontSize: "0.78rem", color: "#aaa" }}>{item.cuisine}</Typography>
-                    )}
-                    <Typography sx={{ fontSize: "0.9rem", color: "#555", mt: 0.3, fontWeight: 600 }}>
-                      ₹{item.price}
-                    </Typography>
-                  </Box>
-
-                  {/* Quantity Controls */}
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      border: "1.5px solid #0d6efd",
-                      borderRadius: "8px",
-                      overflow: "hidden",
-                    }}
-                  >
-                    <IconButton
-                      size="small"
-                      onClick={() => updateQuantity(item.id, item.cuisine, item.quantity - 1)}
-                      sx={{ borderRadius: 0, px: 1, py: 0.5, color: "#0d6efd", "&:hover": { backgroundColor: "#e8f0fe" } }}
-                    >
-                      <RemoveIcon fontSize="small" />
-                    </IconButton>
-                    <Typography sx={{ px: 2, fontWeight: 700, fontSize: "0.95rem", color: "#0d6efd" }}>
-                      {item.quantity}
-                    </Typography>
-                    <IconButton
-                      size="small"
-                      onClick={() => updateQuantity(item.id, item.cuisine, item.quantity + 1)}
-                      sx={{ borderRadius: 0, px: 1, py: 0.5, color: "#0d6efd", "&:hover": { backgroundColor: "#e8f0fe" } }}
-                    >
-                      <AddIcon fontSize="small" />
-                    </IconButton>
-                  </Box>
-
-                  {/* Subtotal */}
-                  <Typography sx={{ fontWeight: 700, fontSize: "0.95rem", color: "#1a1a1a", minWidth: "60px", textAlign: "right" }}>
-                    ₹{item.price * item.quantity}
-                  </Typography>
-
-                  {/* Delete */}
-                  <IconButton
-                    size="small"
-                    onClick={() => removeFromCart(item.id, item.cuisine)}
-                    sx={{ color: "#e53935", "&:hover": { backgroundColor: "#fce4e4" } }}
-                  >
-                    <DeleteOutlineIcon fontSize="small" />
-                  </IconButton>
-                </Box>
-                {idx < cartItems.length - 1 && <Divider sx={{ mx: 3 }} />}
-              </Box>
-            ))}
-
-            {/* Clear Cart */}
-            <Box sx={{ px: 3, py: 2, borderTop: "1px solid #f0f0f0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <Button
-                component={Link}
-                to="/services"
-                variant="text"
-                startIcon={<ArrowBackIcon />}
-                sx={{ color: "#0d6efd", textTransform: "none", fontWeight: 600 }}
-              >
-                Add more items
-              </Button>
-              <Button
-                variant="text"
-                onClick={clearCart}
-                sx={{ color: "#e53935", textTransform: "none", fontWeight: 600 }}
-              >
-                Clear Cart
-              </Button>
-            </Box>
-          </Box>
-
-          {/* Delivery Info */}
-          <Box sx={{ backgroundColor: "#fff", borderRadius: "12px", mt: 2, px: 3, py: 2.5, boxShadow: "0 2px 12px rgba(0,0,0,0.07)" }}>
-            <Typography sx={{ fontWeight: 700, fontSize: "1rem", color: "#1a1a1a", mb: 2 }}>
-              Delivery Details
-            </Typography>
-            {[
-              { icon: "🚀", text: "Estimated delivery: 45–60 mins" },
-              { icon: "🏠", text: "Delivering to your saved address" },
-              { icon: "♻️", text: "Eco-friendly packaging used" },
-            ].map((item, i) => (
-              <Box key={i} sx={{ display: "flex", gap: 2, alignItems: "center", mb: 1.5 }}>
-                <Typography sx={{ fontSize: "1.2rem" }}>{item.icon}</Typography>
-                <Typography sx={{ fontSize: "0.9rem", color: "#555" }}>{item.text}</Typography>
-              </Box>
-            ))}
-          </Box>
-        </Box>
-
-        {/* Right: Bill Summary */}
-        <Box sx={{ width: { xs: "100%", md: 340 }, flexShrink: 0 }}>
-          <Box sx={{ backgroundColor: "#fff", borderRadius: "12px", overflow: "hidden", boxShadow: "0 2px 12px rgba(0,0,0,0.07)" }}>
-            <Box sx={{ px: 3, py: 2.5, borderBottom: "1px solid #f0f0f0" }}>
-              <Typography sx={{ fontWeight: 800, fontSize: "1.1rem", color: "#1a1a1a" }}>
-                Bill Details
-              </Typography>
-            </Box>
-
-            <Box sx={{ px: 3, py: 2 }}>
-              <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1.5 }}>
-                <Typography sx={{ color: "#555", fontSize: "0.9rem" }}>Item Total</Typography>
-                <Typography sx={{ fontWeight: 600, fontSize: "0.9rem", color: "#1a1a1a" }}>₹{totalPrice}</Typography>
-              </Box>
-              <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1.5 }}>
-                <Typography sx={{ color: "#555", fontSize: "0.9rem" }}>Delivery Fee</Typography>
-                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                  {deliveryFee === 0 ? (
-                    <Typography sx={{ color: "#2d8659", fontWeight: 700, fontSize: "0.9rem" }}>FREE</Typography>
-                  ) : (
-                    <Typography sx={{ fontWeight: 600, fontSize: "0.9rem", color: "#1a1a1a" }}>₹{deliveryFee}</Typography>
-                  )}
-                </Box>
-              </Box>
-              <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
-                <Typography sx={{ color: "#555", fontSize: "0.9rem" }}>GST & Charges (5%)</Typography>
-                <Typography sx={{ fontWeight: 600, fontSize: "0.9rem", color: "#1a1a1a" }}>₹{taxes}</Typography>
-              </Box>
-
-              {totalPrice > 0 && totalPrice <= 299 && (
-                <Box sx={{ backgroundColor: "#fff8e1", borderRadius: "8px", px: 2, py: 1.2, mb: 2 }}>
-                  <Typography sx={{ fontSize: "0.8rem", color: "#f57c00", fontWeight: 600 }}>
-                    🛵 Add ₹{300 - totalPrice} more for FREE delivery!
-                  </Typography>
-                </Box>
-              )}
-              {deliveryFee === 0 && totalPrice > 0 && (
-                <Box sx={{ backgroundColor: "#e8f5e9", borderRadius: "8px", px: 2, py: 1.2, mb: 2 }}>
-                  <Typography sx={{ fontSize: "0.8rem", color: "#2d8659", fontWeight: 600 }}>
-                    🎉 You've unlocked FREE delivery!
-                  </Typography>
-                </Box>
-              )}
-
-              <Divider sx={{ mb: 2 }} />
-
-              <Box sx={{ display: "flex", justifyContent: "space-between", mb: 3 }}>
-                <Typography sx={{ fontWeight: 800, fontSize: "1.05rem", color: "#1a1a1a" }}>To Pay</Typography>
-                <Typography sx={{ fontWeight: 900, fontSize: "1.1rem", color: "#1a1a1a" }}>₹{grandTotal}</Typography>
-              </Box>
-
-              <Button
-                fullWidth
-                variant="contained"
-                onClick={() => {
-                  alert(`✅ Order placed successfully!\n\nTotal: ₹${grandTotal}\nThank you for ordering from MealsOnTheWay!`);
-                  clearCart();
-                  navigate("/");
-                }}
-                sx={{
-                  backgroundColor: "#0d6efd",
-                  "&:hover": { backgroundColor: "#0b5ed7" },
-                  borderRadius: "10px",
-                  py: 1.8,
-                  fontSize: "1.05rem",
-                  fontWeight: 800,
-                  textTransform: "none",
-                  boxShadow: "0 4px 14px rgba(13,110,253,0.35)",
-                }}
-              >
-                Place Order • ₹{grandTotal}
-              </Button>
-            </Box>
-          </Box>
-
-          {/* Safety */}
-          <Box sx={{ backgroundColor: "#fff", borderRadius: "12px", mt: 2, px: 3, py: 2.5, boxShadow: "0 2px 12px rgba(0,0,0,0.07)" }}>
-            <Typography sx={{ fontWeight: 700, fontSize: "0.95rem", color: "#1a1a1a", mb: 2 }}>
-              Why MealsOnTheWay?
-            </Typography>
-            {[
-              "100% Fresh Home-cooked Food",
-              "Hygienic Packaging",
-              "On-time Delivery Guaranteed",
-            ].map((text, i) => (
-              <Box key={i} sx={{ display: "flex", gap: 1.5, alignItems: "center", mb: 1.2 }}>
-                <CheckCircleOutlineIcon sx={{ color: "#2d8659", fontSize: "18px" }} />
-                <Typography sx={{ fontSize: "0.85rem", color: "#555" }}>{text}</Typography>
-              </Box>
-            ))}
-          </Box>
-        </Box>
-      </Box>
-    </Box>
-  );
 };
 
 export default CartPage;
