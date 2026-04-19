@@ -12,12 +12,110 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import { useCart } from './CartContext';
 import { useNavigate } from 'react-router-dom';
+import httpClient from '../httpClient';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const CartPage = () => {
-    const { cartItems, removeFromCart, updateQuantity, totalItems, totalPrice } = useCart();
+    const { cartItems, removeFromCart, updateQuantity, clearCart, totalItems, totalPrice } = useCart();
     const navigate = useNavigate();
     const [date, setDate] = useState('');
     const [timeSlot, setTimeSlot] = useState('');
+    const [loading, setLoading] = useState(false);
+
+    const handleProceedToPay = async () => {
+        const token = localStorage.getItem("motw-token");
+        if (!token) {
+            alert("Please login to proceed with the payment.");
+            navigate('/login');
+            return;
+        }
+
+        if (!date || !timeSlot) {
+            alert("Please select both date and time slot for delivery.");
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+            // 1. Create the order in your backend database
+            const orderData = {
+                address: "Balewadi High St, Laxman Nagar, Baner, Pune, Maharashtra 411045, India", // Use default or actual user address
+                items: cartItems.map(item => ({
+                    foodId: item.id,
+                    quantity: item.quantity,
+                    foodName: item.name,
+                    price: item.price
+                }))
+            };
+
+            const { data: orderResponse } = await httpClient.post('/orders/create', orderData);
+            const { orderId } = orderResponse.data;
+
+            // 2. Create the Razorpay order
+            const { data: razorpayResponse } = await httpClient.post('/payments/create-order', {
+                orderId: orderId,
+                amount: Math.round(grandTotal) // Razorpay expects amount in full units if backend handles paise conversion, but our backend does amount * 100
+            });
+
+            // 3. Configure Razorpay options
+            const options = {
+                key: "rzp_test_SZ2dIOsRiszVVg", // Should ideally be in env
+                amount: razorpayResponse.amount, 
+                currency: razorpayResponse.currency,
+                name: "MealsOnTheWay",
+                description: "Food Order Payment",
+                image: "/logo.png",
+                order_id: razorpayResponse.razorpayOrderId,
+                handler: async (response) => {
+                    try {
+                        // 4. Verify payment on the backend
+                        const verificationData = {
+                            razorpay_order_id: response.razorpay_order_id,
+                            razorpay_payment_id: response.razorpay_payment_id,
+                            razorpay_signature: response.razorpay_signature,
+                        };
+
+                        const { data: verifyResponse } = await httpClient.post('/payments/verify-payment', verificationData);
+
+                        if (verifyResponse.success) {
+                            alert("Payment successful! Your order has been placed.");
+                            clearCart();
+                            navigate('/my-orders');
+                        } else {
+                            alert("Payment verification failed. Please contact support.");
+                        }
+                    } catch (error) {
+                        console.error("Verification Error:", error);
+                        alert("An error occurred during payment verification.");
+                    }
+                },
+                prefill: {
+                    name: JSON.parse(localStorage.getItem("motw-user") || "{}").name || "",
+                    email: JSON.parse(localStorage.getItem("motw-user") || "{}").email || "",
+                    contact: ""
+                },
+                notes: {
+                    address: "MealsOnTheWay Delivery"
+                },
+                theme: {
+                    color: orangeTheme.primary,
+                },
+            };
+
+            const rzp = new window.Razorpay(options);
+            rzp.on('payment.failed', function (response) {
+                alert("Payment failed: " + response.error.description);
+            });
+            rzp.open();
+
+        } catch (error) {
+            console.error("Payment Error:", error);
+            alert(error.response?.data?.message || "Failed to initiate payment. Please try again.");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     // Calculations
     const subTotal = totalPrice || 0;
@@ -191,9 +289,11 @@ const CartPage = () => {
                             <Button 
                                 fullWidth 
                                 variant="contained" 
+                                onClick={handleProceedToPay}
+                                disabled={loading}
                                 sx={{ mt: 4, py: 2, borderRadius: '12px', bgcolor: orangeTheme.primary, fontWeight: 900, fontSize: '16px', "&:hover": { bgcolor: '#e65100' } }}
                             >
-                                PROCEED TO PAY
+                                {loading ? <CircularProgress size={24} sx={{ color: '#fff' }} /> : 'PROCEED TO PAY'}
                             </Button>
                         </Paper>
                     </Grid>

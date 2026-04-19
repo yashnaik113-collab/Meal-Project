@@ -147,7 +147,14 @@ const Login = () => {
   };
 
   return (
-    <Box sx={{ minHeight: "100vh", display: "flex", flexDirection: "column", bgcolor: "#f8fff2" }}>
+    <Box
+      sx={{
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        bgcolor: "#f8fff2",
+      }}
+    >
       {openLoginModal && (
         <Box
           sx={{
@@ -181,12 +188,22 @@ const Login = () => {
         </Box>
 
         <Box>
-          <Typography sx={{ fontSize: "32px", fontWeight: "700", color: "#2d8659", mb: 1 }}>
+          <Typography
+            sx={{
+              fontSize: "32px",
+              fontWeight: "700",
+              color: "#2d8659",
+              mb: 1,
+            }}
+          >
             Login
           </Typography>
           <Typography sx={{ fontSize: "14px", color: "#666", mb: 3 }}>
             or{" "}
-            <Link to="/signup" style={{ color: "#2d8659", textDecoration: "underline" }}>
+            <Link
+              to="/signup"
+              style={{ color: "#2d8659", textDecoration: "underline" }}
+            >
               Create An Account
             </Link>
           </Typography>
@@ -201,14 +218,23 @@ const Login = () => {
               mb: loginErrors.email ? 0.5 : 2,
               "& .MuiOutlinedInput-root": {
                 borderRadius: 3,
-                "& fieldset": { borderColor: loginErrors.email ? "#d32f2f" : "#ddd", borderWidth: "2px" },
-                "&:hover fieldset": { borderColor: loginErrors.email ? "#d32f2f" : "#2d8659" },
-                "&.Mui-focused fieldset": { borderColor: loginErrors.email ? "#d32f2f" : "#2d8659" },
+                "& fieldset": {
+                  borderColor: loginErrors.email ? "#d32f2f" : "#ddd",
+                  borderWidth: "2px",
+                },
+                "&:hover fieldset": {
+                  borderColor: loginErrors.email ? "#d32f2f" : "#2d8659",
+                },
+                "&.Mui-focused fieldset": {
+                  borderColor: loginErrors.email ? "#d32f2f" : "#2d8659",
+                },
               },
             }}
           />
           {loginErrors.email && (
-            <Typography sx={{ fontSize: "12px", color: "#d32f2f", mb: 2, pl: 1 }}>
+            <Typography
+              sx={{ fontSize: "12px", color: "#d32f2f", mb: 2, pl: 1 }}
+            >
               {loginErrors.email}
             </Typography>
           )}
@@ -223,20 +249,31 @@ const Login = () => {
               mb: loginErrors.password ? 0.5 : 2,
               "& .MuiOutlinedInput-root": {
                 borderRadius: 3,
-                "& fieldset": { borderColor: loginErrors.password ? "#d32f2f" : "#ddd", borderWidth: "2px" },
-                "&:hover fieldset": { borderColor: loginErrors.password ? "#d32f2f" : "#2d8659" },
-                "&.Mui-focused fieldset": { borderColor: loginErrors.password ? "#d32f2f" : "#2d8659" },
+                "& fieldset": {
+                  borderColor: loginErrors.password ? "#d32f2f" : "#ddd",
+                  borderWidth: "2px",
+                },
+                "&:hover fieldset": {
+                  borderColor: loginErrors.password ? "#d32f2f" : "#2d8659",
+                },
+                "&.Mui-focused fieldset": {
+                  borderColor: loginErrors.password ? "#d32f2f" : "#2d8659",
+                },
               },
             }}
           />
           {loginErrors.password && (
-            <Typography sx={{ fontSize: "12px", color: "#d32f2f", mb: 2, pl: 1 }}>
+            <Typography
+              sx={{ fontSize: "12px", color: "#d32f2f", mb: 2, pl: 1 }}
+            >
               {loginErrors.password}
             </Typography>
           )}
 
           {loginErrors.form && (
-            <Typography sx={{ fontSize: "12px", color: "#d32f2f", mb: 2, pl: 1 }}>
+            <Typography
+              sx={{ fontSize: "12px", color: "#d32f2f", mb: 2, pl: 1 }}
+            >
               {loginErrors.form}
             </Typography>
           )}
@@ -257,11 +294,17 @@ const Login = () => {
               "&:hover": { backgroundColor: "#245a47" },
             }}
           >
-            {loading ? <CircularProgress size={22} sx={{ color: "white" }} /> : "Submit"}
+            {loading ? (
+              <CircularProgress size={22} sx={{ color: "white" }} />
+            ) : (
+              "Submit"
+            )}
           </Button>
 
           <Box sx={{ borderTop: "1px solid #ddd", my: 3 }} />
-          <Typography sx={{ fontSize: "28px", fontWeight: "700", color: "#333", mb: 2 }}>
+          <Typography
+            sx={{ fontSize: "28px", fontWeight: "700", color: "#333", mb: 2 }}
+          >
             Flexible Plans
           </Typography>
           <Box
@@ -282,9 +325,16 @@ const Login = () => {
 
           <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
             {benefits.map((benefit) => (
-              <Box key={benefit} sx={{ display: "flex", gap: 2, alignItems: "center" }}>
-                <CheckCircleIcon sx={{ color: "#2d8659", fontSize: "24px", flexShrink: 0 }} />
-                <Typography sx={{ color: "#666", fontWeight: "500", fontSize: "14px" }}>
+              <Box
+                key={benefit}
+                sx={{ display: "flex", gap: 2, alignItems: "center" }}
+              >
+                <CheckCircleIcon
+                  sx={{ color: "#2d8659", fontSize: "24px", flexShrink: 0 }}
+                />
+                <Typography
+                  sx={{ color: "#666", fontWeight: "500", fontSize: "14px" }}
+                >
                   {benefit}
                 </Typography>
               </Box>
@@ -304,7 +354,9 @@ const Login = () => {
           borderBottom: "1px solid #f0f0f0",
         }}
       >
-        <Box sx={{ fontSize: "24px", fontWeight: "bold", color: "#2d8659" }}>mealsontheway</Box>
+        <Box sx={{ fontSize: "24px", fontWeight: "bold", color: "#2d8659" }}>
+          mealsontheway
+        </Box>
         <Box sx={{ display: "flex", gap: 2 }}>
           <Button
             onClick={handleLoginClick}
@@ -342,9 +394,26 @@ const Login = () => {
         </Box>
       </Box>
 
-      <Box sx={{ backgroundColor: "#1ec670", py: { xs: 5, md: 9 }, px: { xs: 2, md: 6 } }}>
-        <Grid container spacing={6} alignItems="center" maxWidth="1280px" mx="auto">
-          <Grid item xs={12} md={4} sx={{ display: "flex", justifyContent: "center" }}>
+      <Box
+        sx={{
+          backgroundColor: "#1ec670",
+          py: { xs: 5, md: 9 },
+          px: { xs: 2, md: 6 },
+        }}
+      >
+        <Grid
+          container
+          spacing={6}
+          alignItems="center"
+          maxWidth="1280px"
+          mx="auto"
+        >
+          <Grid
+            item
+            xs={12}
+            md={4}
+            sx={{ display: "flex", justifyContent: "center" }}
+          >
             <Box
               component="img"
               src={chefImg}
@@ -358,15 +427,28 @@ const Login = () => {
             />
           </Grid>
           <Grid item xs={12} md={4}>
-            <Typography sx={{ fontSize: { xs: "36px", md: "50px" }, fontWeight: 900, lineHeight: 1.05 }}>
-              LOGIN WITH
+            <Typography
+              sx={{
+                fontSize: { xs: "36px", md: "50px" },
+                fontWeight: 900,
+                lineHeight: 1.05,
+              }}
+            >
+              LOGIN TO
               <br />
-              YOUR BACKEND
+              ACCESS
               <br />
-              ACCOUNT
+              OUR SERVICES
             </Typography>
-            <Typography sx={{ mt: 2, fontSize: "18px", fontWeight: 600, color: "#163124" }}>
-              MealsOnTheWay login now uses your real backend API with email and password.
+            <Typography
+              sx={{
+                mt: 2,
+                fontSize: "18px",
+                fontWeight: 600,
+                color: "#163124",
+              }}
+            >
+              MealsOnTheWay now came up with the new freshly prepared meals
             </Typography>
             <Button
               onClick={handleLoginClick}
@@ -403,7 +485,15 @@ const Login = () => {
       </Box>
 
       <Box sx={{ px: { xs: 2, md: 8 }, py: 8 }}>
-        <Typography sx={{ fontSize: { xs: "28px", md: "38px" }, fontWeight: 800, color: "#2d8659", mb: 4, textAlign: "center" }}>
+        <Typography
+          sx={{
+            fontSize: { xs: "28px", md: "38px" },
+            fontWeight: 800,
+            color: "#2d8659",
+            mb: 4,
+            textAlign: "center",
+          }}
+        >
           5 Reasons To Love MealsOnTheWay
         </Typography>
         <Grid container spacing={3} maxWidth="1200px" mx="auto">
@@ -420,14 +510,31 @@ const Login = () => {
                   boxShadow: "0px 8px 25px rgba(0,0,0,0.06)",
                 }}
               >
-                <Box sx={{ backgroundColor: "#61a84b", color: "white", borderRadius: 2, p: 1, display: "flex" }}>
+                <Box
+                  sx={{
+                    backgroundColor: "#61a84b",
+                    color: "white",
+                    borderRadius: 2,
+                    p: 1,
+                    display: "flex",
+                  }}
+                >
                   {item.icon}
                 </Box>
                 <Box>
-                  <Typography sx={{ fontWeight: 800, fontSize: "15px", color: "#111" }}>
+                  <Typography
+                    sx={{ fontWeight: 800, fontSize: "15px", color: "#111" }}
+                  >
                     {item.title}
                   </Typography>
-                  <Typography sx={{ fontSize: "13px", color: "#555", mt: 0.5, lineHeight: 1.5 }}>
+                  <Typography
+                    sx={{
+                      fontSize: "13px",
+                      color: "#555",
+                      mt: 0.5,
+                      lineHeight: 1.5,
+                    }}
+                  >
                     {item.desc}
                   </Typography>
                 </Box>

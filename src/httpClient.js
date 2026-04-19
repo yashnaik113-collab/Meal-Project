@@ -7,6 +7,17 @@ const httpClient = axios.create({
   },
 });
 
+httpClient.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("motw-token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
 httpClient.interceptors.response.use(
   (response) => response,
   (error) => {
